@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 import S from 'semantic-ui-react'
 import moment from 'moment'
 
-const ScrimCard = ({ title, createdAt, users, platformImg }) => (
-  <S.Card>
+const ScrimCard = ({ title, createdAt, users, game, handleScrimClick }) => (
+  <S.Card onClick={ () => handleScrimClick({ title, createdAt, users, game }) }>
     <S.Card.Content>
-    <S.Image size='mini' floated='right' src={ platformImg } />
+    <S.Image size='mini' floated='right' src={ game.platformImg } />
       <S.Card.Header>{ title }</S.Card.Header>
       <S.Card.Meta>{ moment(createdAt).fromNow() }</S.Card.Meta>
       <S.Card.Description>
@@ -27,10 +27,10 @@ const ScrimCard = ({ title, createdAt, users, platformImg }) => (
 )
 
 ScrimCard.propTypes = {
-  title: PropTypes.string,
-  createdAt: PropTypes.instanceOf(Date),
-  users: PropTypes.array,
-  platformImg: PropTypes.string
+  title: PropTypes.string.isRequired,
+  createdAt: PropTypes.instanceOf(Date).isRequired,
+  users: PropTypes.array.isRequired,
+  game: PropTypes.object.isRequired
 }
 
 export default ScrimCard

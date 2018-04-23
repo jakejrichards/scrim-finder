@@ -9,7 +9,7 @@ const Item = ({ to, children }) => (
 class Menu extends Component {
   render() {
     return (
-      <S.Menu style={{ margin: 0 }} size='large' fluid borderless>
+      <S.Menu size='large' fluid borderless>
         <Item to='/'>
           <S.Header>Esports Finder</S.Header>
         </Item>
