@@ -4,6 +4,8 @@ import { Mongo } from 'meteor/mongo'
 import SimpleSchema from 'simpl-schema'
 import uuid from 'uuid/v4'
 
+import { Games } from './games'
+
 export const Scrims = new Mongo.Collection('scrims')
 
 const ScrimSchema = new SimpleSchema({
@@ -69,7 +71,7 @@ Meteor.methods({
     const scrim = {
       id: uuid(),
       createdAt: new Date(),
-      title, game, platform, region, users
+      title, game, platform: game.platform, region, users
     }
 
     console.log(scrim)
