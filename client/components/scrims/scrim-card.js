@@ -7,7 +7,7 @@ import moment from 'moment'
 const ScrimCard = ({ title, createdAt, users, game, handleScrimClick }) => (
   <S.Card onClick={ () => handleScrimClick({ title, createdAt, users, game }) }>
     <S.Card.Content>
-    <S.Image size='mini' floated='right' src={ game.platformImg } />
+    <S.Image size='mini' floated='right' src={ game.platform.img } />
       <S.Card.Header>{ title }</S.Card.Header>
       <S.Card.Meta>{ moment(createdAt).fromNow() }</S.Card.Meta>
       <S.Card.Description>
@@ -30,7 +30,8 @@ ScrimCard.propTypes = {
   title: PropTypes.string.isRequired,
   createdAt: PropTypes.instanceOf(Date).isRequired,
   users: PropTypes.array.isRequired,
-  game: PropTypes.object.isRequired
+  game: PropTypes.object.isRequired,
+  handleScrimClick: PropTypes.func.isRequired
 }
 
 export default ScrimCard

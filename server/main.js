@@ -4,6 +4,8 @@ import uuid from 'uuid/v4'
 import { Games } from '../imports/collections/games'
 import { Scrims } from '../imports/collections/scrims'
 
+// refresh
+
 const games = ['Fornite Battle Royale', 'Call of Duty WWII']
 const platforms = ['ps4', 'xb1', 'pc']
 const platformNames = {
@@ -28,9 +30,11 @@ Meteor.startup(() => {
         const g = {
           id: uuid(),
           title: game,
-          platform: platform,
-          platformTitle: platformNames[platform],
-          platformImg: platformImages[platform]
+          platform: {
+            value: platform,
+            title: platformNames[platform],
+            img: platformImages[platform]
+          }
         }
         Games.insert(g)
       }
@@ -48,6 +52,7 @@ Meteor.startup(() => {
         createdAt: new Date(),
         users: [ user1, user2 ],
         title: '2v2 Scrim',
+        region: 'NA East',
         game
       }
       Scrims.insert(scrim)
