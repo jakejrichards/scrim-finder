@@ -2,22 +2,42 @@ import React, { Component } from 'react'
 import { withTracker } from 'meteor/react-meteor-data'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import S from 'semantic-ui-react'
+import qs from 'query-string'
 import moment from 'moment'
 
+import { Games } from '../../../imports/collections/games'
 import { Scrims } from '../../../imports/collections/scrims'
 
 import ScrimCard from './scrim-card'
-import ScrimModal from './scrim-modal'
 import ScrimForm from './scrim-form'
+import ScrimsList from './scrims-list'
 
-const games = ['Fortnite', 'Call of Duty']
-const platforms = ['Playstation 4', 'Xbox One', 'PC']
+const platforms = [
+  { key: 0, value: '', text: 'All Platforms' },
+  { key: 1, value: 'ps4', text: 'Playstation 4' }, 
+  { key: 2, value: 'xb1', text: 'Xbox One' },
+  { key: 3, value: 'pc', text: 'PC' }
+]
+
+const regions = [
+  { key: 0, value: '', text: 'All Regions' },
+  { key: 1, value: 'NA East', text: 'NA East' }, 
+  { key: 2, value: 'NA West', text: 'NA West' },
+  { key: 3, value: 'EU', text: 'EU' },
+  { key: 4, value: 'Global', text: 'Global' }
+]
 
 class ScrimsComponent extends Component {
   constructor(props) {
     super(props)
+    const { scrimsHandle, scrimsReady } = props
+    const { game, platform, region } = qs.parse(props.location.search)
     this.state = {
-      modalOpen: true
+      scrimsCount: 12,
+      filterGameTitle: game ? game : '',
+      filterPlatformValue: platform ? platform : '',
+      filterRegion: region ? region : '',
+      modalOpen: false
     }
   }
 
@@ -25,54 +45,74 @@ class ScrimsComponent extends Component {
     this.setState({ modalOpen: true })
   }
 
+  handleLoadMoreClick = () => {
+    this.setState({ scrimsCount: this.state.scrimsCount + 12 })
+  }
+
   handleScrimClick = ({ title, createdAt, users, platformImg }) => {
     
   }
 
+  handleScrimFormSubmit = () => {
+    this.setState({ modalOpen: false })
+  }
+
   render() {
-    const { scrims } = this.props
-    const { modalOpen } = this.state
+    const { games } = this.props
+    console.log(games)
+    const { modalOpen, scrimsCount, filterGameTitle, filterPlatformValue, filterRegion } = this.state
+
     return (
       <S.Container>
-        <S.Header as='h1'>Scrim Finder</S.Header>
-        <S.Dropdown text='Filter Games' icon='game' floating labeled button className='icon'>
-          <S.Dropdown.Menu>
-            <S.Input icon='search' iconPosition='left' className='search' />
-            <S.Dropdown.Menu scrolling>
-              {games.map((game, i) => <S.Dropdown.Item key={ i }>{ game }</S.Dropdown.Item> )}
-            </S.Dropdown.Menu>
-          </S.Dropdown.Menu>
-        </S.Dropdown>
-        <S.Dropdown text='Filter Platforms' icon='desktop' floating labeled button className='icon'>
-          <S.Dropdown.Menu>
-            <S.Input icon='search' iconPosition='left' className='search' />
-            <S.Dropdown.Menu scrolling>
-              {platforms.map((platform, i) => <S.Dropdown.Item key={ i }>{ platform }</S.Dropdown.Item> )}
-            </S.Dropdown.Menu>
-          </S.Dropdown.Menu>
-        </S.Dropdown>
+        <S.Header 
+          style={{ marginBottom: '2rem', marginTop: '2rem' }} 
+          as='h1' 
+          content='Scrim Finder' 
+          subheader='Seamlessly find and post scrims to improve your skills' />
+        <S.Select search button
+          onChange={ (e, data) => this.setState({ filterGameTitle: data.value, scrimsCount: 12 })} 
+          value={ filterGameTitle } 
+          placeholder='Select Game' 
+          options={ [{ key: -1, value: '', text: 'All Games' }].concat(games.map((game, i) => {
+            return { key: i, value: game, text: game }
+          })) } />
+        <S.Select search button
+          onChange={ (e, data) => this.setState({ filterPlatformValue: data.value, scrimsCount: 12 })} 
+          value={ filterPlatformValue } 
+          placeholder='Select Platform' 
+          options={ platforms } />
+        <S.Select search button
+          onChange={ (e, data) => this.setState({ filterRegion: data.value, scrimsCount: 12 })} 
+          value={ filterRegion } 
+          placeholder='Select Region' 
+          options={ regions } />
         <S.Button color='red' floated='right' content='Post Scrim' labelPosition='left' icon='signup' onClick={ this.handleModalButtonClick }></S.Button>
         <S.Modal size='small' style={{ marginTop: 0, marginLeft: 'auto', marginRight: 'auto' }} open={ modalOpen } onClose={ () => this.setState({ modalOpen: false }) }>
           <S.Modal.Header>Post A Scrim</S.Modal.Header>
           <S.Modal.Content>
             <S.Modal.Description>
-              <ScrimForm />
+              <ScrimForm handleScrimFormSubmit={ this.handleScrimFormSubmit } />
             </S.Modal.Description>
           </S.Modal.Content>
         </S.Modal>
         <S.Divider />
-        <S.Card.Group itemsPerRow={ 3 }>
-          { scrims.map((scrim, i) => (
-            <ScrimCard key={ i } handleScrimClick={ this.handleScrimClick } { ...scrim } />
-          )) }
-        </S.Card.Group>
-        <S.Button style={{ marginTop: '2rem' }} color='teal' fluid size='large'>Load More Scrims</S.Button>
+        <ScrimsList 
+          scrimsCount={ scrimsCount } 
+          gameTitle={ filterGameTitle } 
+          platformValue={ filterPlatformValue }
+          region={ filterRegion }
+          handleLoadMoreClick={ this.handleLoadMoreClick } 
+          handleScrimClick={ this.handleScrimClick } />
+          <S.Advertisement centered unit='panorama' test='Panorama' />
       </S.Container>
     )
   }
 }
 
 export default withTracker(() => {
-  const scrims = Scrims.find({}, { limit: 12 }).fetch()
-  return { scrims }
+  const games = Games.find({}).map(game => game.title)
+  const uniqueGames = games.filter((game, index, self) => {
+    return self.indexOf(game) == index
+  })
+  return { games: uniqueGames }
 })(ScrimsComponent)

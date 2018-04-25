@@ -28,6 +28,9 @@ const ScrimSchema = new SimpleSchema({
   game: {
     type: Object
   },
+  'game.title': {
+    type: String,
+  },
   'game.platform': {
     type: Object
   },
@@ -66,15 +69,12 @@ Meteor.methods({
       throw new Meteor.Error('Game could not be found')
     }
 
-    console.log(game)
-
     const scrim = {
       id: uuid(),
       createdAt: new Date(),
       title, game, platform: game.platform, region, users
     }
 
-    console.log(scrim)
-
+    Scrims.insert(scrim)
   }
 })

@@ -46,6 +46,7 @@ class ScrimForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
+    const { handleScrimFormSubmit } = this.props
     const { playerInputs, titleInput, gameInput, platformInput, regionInput } = this.state
     Meteor.call('scrims.insert', { 
       users: playerInputs, 
@@ -54,6 +55,7 @@ class ScrimForm extends Component {
       platformValue: platformInput, 
       region: regionInput 
     })
+    handleScrimFormSubmit()
   }
 
   render() {

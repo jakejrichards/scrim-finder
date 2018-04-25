@@ -29,7 +29,11 @@ class Home extends Component {
   render() {
     return (
       <S.Container textAlign='center'>
-        <S.Header as='h1' content='Welcome to Esports Finder' subheader='Improve your skills by quickly and easily finding other players to practice against' />
+        <S.Header 
+          as='h1' 
+          style={{ marginTop: '2rem', marginBottom: '2rem' }}
+          content='Welcome to Esports Finder' 
+          subheader='Improve your skills by quickly and easily finding other players to practice against' />
         <S.Statistic.Group widths='three' items={ items }></S.Statistic.Group>
         <S.Grid container>
           <S.Grid.Row columns={ 1 }>

@@ -4,7 +4,7 @@ import uuid from 'uuid/v4'
 import { Games } from '../imports/collections/games'
 import { Scrims } from '../imports/collections/scrims'
 
-// refresh
+// refres
 
 const games = ['Fornite Battle Royale', 'Call of Duty WWII']
 const platforms = ['ps4', 'xb1', 'pc']
@@ -58,5 +58,23 @@ Meteor.startup(() => {
       Scrims.insert(scrim)
     }
   }
+
+  Meteor.publish('games', function() {
+    return Games.find()
+  })
+
+  Meteor.publish('scrims', function(scrimsCount = 12 , gameTitle, platformValue, region) {
+    const filter = {}
+    if (gameTitle) {
+      filter['game.title'] = gameTitle
+    }
+    if (platformValue) {
+      filter['game.platform.value'] = platformValue
+    }
+    if (region) {
+      filter['region'] = region
+    }
+    return Scrims.find(filter, { limit: scrimsCount, sort: { createdAt: -1 } })
+  })
 
 });
