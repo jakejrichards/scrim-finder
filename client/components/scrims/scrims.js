@@ -104,8 +104,7 @@ class ScrimsComponent extends Component {
           gameTitle={ filterGameTitle } 
           platformValue={ filterPlatformValue }
           region={ filterRegion }
-          handleLoadMoreClick={ this.handleLoadMoreClick } 
-          handleScrimClick={ this.handleScrimClick } />
+          handleLoadMoreClick={ this.handleLoadMoreClick } />
         <ScrimModal open={ scrimModalOpen } content={ scrimModalContent } onClose={ () => this.setState({ scrimModalOpen: false }) } />
         <S.Advertisement centered unit='panorama' test='Panorama' />
       </S.Container>

@@ -12,13 +12,13 @@ class ScrimsList extends Component {
   }
 
   render() {
-    const { scrims, scrimsReady, handleScrimClick, handleLoadMoreClick } = this.props
+    const { scrims, scrimsReady, handleLoadMoreClick } = this.props
 
     return (
       <div>
         <S.Card.Group itemsPerRow={ 4 }>
           { scrims.map((scrim, i) => (
-              <ScrimCard key={ scrim.id } handleScrimClick={ handleScrimClick } { ...scrim } />
+              <ScrimCard key={ scrim.id } { ...scrim } />
           )) }
         </S.Card.Group>
         <S.Button fluid

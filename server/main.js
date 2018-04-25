@@ -4,7 +4,7 @@ import uuid from 'uuid/v4'
 import { Games } from '../imports/collections/games'
 import { Scrims } from '../imports/collections/scrims'
 
-// refresh
+// refres
 
 const games = ['Fortnite Battle Royale', 'Call of Duty WWII']
 const gameImages = {
