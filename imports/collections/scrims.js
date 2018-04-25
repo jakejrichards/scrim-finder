@@ -28,8 +28,14 @@ const ScrimSchema = new SimpleSchema({
   game: {
     type: Object
   },
+  'game.id': {
+    type: String
+  },
   'game.title': {
     type: String,
+  },
+  'game.img': {
+    type: String
   },
   'game.platform': {
     type: Object

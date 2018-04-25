@@ -4,9 +4,13 @@ import uuid from 'uuid/v4'
 import { Games } from '../imports/collections/games'
 import { Scrims } from '../imports/collections/scrims'
 
-// refres
+// refresh
 
-const games = ['Fornite Battle Royale', 'Call of Duty WWII']
+const games = ['Fortnite Battle Royale', 'Call of Duty WWII']
+const gameImages = {
+  'Fortnite Battle Royale': 'https://articles-images.sftcdn.net/wp-content/uploads/sites/3/2018/04/fortnite-pc-1024x576-1024x576.jpg',
+  'Call of Duty WWII': 'https://blackfridayhits.com/wp-content/uploads/2017/09/Call-of-Duty-WWII-Black-Friday.jpg'
+}
 const platforms = ['ps4', 'xb1', 'pc']
 const platformNames = {
   'ps4': 'Playstation 4',
@@ -19,6 +23,8 @@ const platformImages = {
   'pc': 'https://cdn1.unrealengine.com/UnrealTournament/3475636/com/epicgames/plugins/clientDownload/logo-epic-cb4399a7ee205610531057537937045e.png'
 }
 
+const regions = ['NA East', 'NA West', 'EU', 'Global']
+
 const users = ['Consisttt', 'GuyIsOnline', 'NeverOutslayed']
 
 Meteor.startup(() => {
@@ -30,6 +36,7 @@ Meteor.startup(() => {
         const g = {
           id: uuid(),
           title: game,
+          img: gameImages[game],
           platform: {
             value: platform,
             title: platformNames[platform],
@@ -43,7 +50,7 @@ Meteor.startup(() => {
 
   const scrimsCount = Scrims.find().count()
   if (scrimsCount === 0) {
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 500; i++) {
       const user1 = users[Math.floor(Math.random()*users.length)]
       const user2 = users[Math.floor(Math.random()*users.length)]
       const [ game ] = Games.aggregate([ { $sample: { size: 1 } } ])
@@ -52,7 +59,7 @@ Meteor.startup(() => {
         createdAt: new Date(),
         users: [ user1, user2 ],
         title: '2v2 Scrim',
-        region: 'NA East',
+        region: regions[Math.floor(Math.random() * regions.length)],
         game
       }
       Scrims.insert(scrim)

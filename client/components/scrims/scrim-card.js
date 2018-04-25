@@ -7,7 +7,7 @@ import moment from 'moment'
 const ScrimCard = ({ title, region, createdAt, users, game, handleScrimClick }) => (
   <S.Transition transitionOnMount animation='horizontal flip' duration={ 250 }>
     <S.Card onClick={ () => handleScrimClick({ title, region, createdAt, users, game }) }>
-      <S.Image src={ 'https://articles-images.sftcdn.net/wp-content/uploads/sites/3/2018/04/fortnite-pc-1024x576-1024x576.jpg' } />
+      <S.Image src={ game.img } />
       <S.Card.Content>
         <S.Image size='mini' floated='right' src={ game.platform.img } />
         <S.Card.Header>{ title }</S.Card.Header>
