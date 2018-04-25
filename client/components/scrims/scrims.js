@@ -10,6 +10,7 @@ import { Scrims } from '../../../imports/collections/scrims'
 
 import ScrimCard from './scrim-card'
 import ScrimForm from './scrim-form'
+import ScrimModal from './scrim-modal'
 import ScrimsList from './scrims-list'
 
 const platforms = [
@@ -37,30 +38,32 @@ class ScrimsComponent extends Component {
       filterGameTitle: game ? game : '',
       filterPlatformValue: platform ? platform : '',
       filterRegion: region ? region : '',
-      modalOpen: false
+      formModalOpen: false,
+      scrimModalOpen: false,
+      scrimModalContent: {}
     }
   }
 
-  handleModalButtonClick = (e) => {
-    this.setState({ modalOpen: true })
+  handleFormModalButtonClick = (e) => {
+    this.setState({ formModalOpen: true })
   }
 
   handleLoadMoreClick = () => {
     this.setState({ scrimsCount: this.state.scrimsCount + 12 })
   }
 
-  handleScrimClick = ({ title, createdAt, users, platformImg }) => {
-    
+  handleScrimClick = (scrimModalContent) => {
+    this.setState({ scrimModalContent, scrimModalOpen: true })
   }
 
   handleScrimFormSubmit = () => {
-    this.setState({ modalOpen: false })
+    this.setState({ formModalOpen: false })
   }
 
   render() {
     const { games } = this.props
     console.log(games)
-    const { modalOpen, scrimsCount, filterGameTitle, filterPlatformValue, filterRegion } = this.state
+    const { scrimModalContent, scrimModalOpen, formModalOpen, scrimsCount, filterGameTitle, filterPlatformValue, filterRegion } = this.state
 
     return (
       <S.Container>
@@ -86,8 +89,8 @@ class ScrimsComponent extends Component {
           value={ filterRegion } 
           placeholder='Select Region' 
           options={ regions } />
-        <S.Button color='red' floated='right' content='Post Scrim' labelPosition='left' icon='signup' onClick={ this.handleModalButtonClick }></S.Button>
-        <S.Modal size='small' style={{ marginTop: 0, marginLeft: 'auto', marginRight: 'auto' }} open={ modalOpen } onClose={ () => this.setState({ modalOpen: false }) }>
+        <S.Button color='red' floated='right' content='Post Scrim' labelPosition='left' icon='signup' onClick={ this.handleFormModalButtonClick }></S.Button>
+        <S.Modal size='small' style={{ marginTop: 0, marginLeft: 'auto', marginRight: 'auto' }} open={ formModalOpen } onClose={ () => this.setState({ formModalOpen: false }) }>
           <S.Modal.Header>Post A Scrim</S.Modal.Header>
           <S.Modal.Content>
             <S.Modal.Description>
@@ -103,7 +106,8 @@ class ScrimsComponent extends Component {
           region={ filterRegion }
           handleLoadMoreClick={ this.handleLoadMoreClick } 
           handleScrimClick={ this.handleScrimClick } />
-          <S.Advertisement centered unit='panorama' test='Panorama' />
+        <ScrimModal open={ scrimModalOpen } content={ scrimModalContent } onClose={ () => this.setState({ scrimModalOpen: false }) } />
+        <S.Advertisement centered unit='panorama' test='Panorama' />
       </S.Container>
     )
   }

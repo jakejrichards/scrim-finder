@@ -18,11 +18,15 @@ class ScrimsList extends Component {
       <div>
         <S.Card.Group itemsPerRow={ 4 }>
           { scrims.map((scrim, i) => (
-            <ScrimCard key={ i } handleScrimClick={ handleScrimClick } { ...scrim } />
+              <ScrimCard key={ scrim.id } handleScrimClick={ handleScrimClick } { ...scrim } />
           )) }
         </S.Card.Group>
-        <S.Button onClick={ handleLoadMoreClick } style={{ marginTop: '2rem', marginBottom: '2rem' }} color='teal' fluid size='large'>Load More Scrims</S.Button>
-      </div>
+        <S.Button fluid
+          onClick={ handleLoadMoreClick } 
+          style={{ marginTop: '2rem', marginBottom: '2rem' }} 
+          color='teal'
+          size='large'>Load More Scrims</S.Button>
+      </div>      
     )
   }
 }
