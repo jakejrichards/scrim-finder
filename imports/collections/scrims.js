@@ -70,7 +70,7 @@ Meteor.methods({
     check(region, String)
     check(users, Array)
 
-    const game = Games.findOne({ title: gameTitle, 'platform.value': platformValue }, { fields: { title: 1, platform: 1 } })
+    const game = Games.findOne({ title: gameTitle, 'platform.value': platformValue }, { fields: { title: 1, img: 1, platform: 1, id: 1 } })
     if (!game) {
       throw new Meteor.Error('Game could not be found')
     }
@@ -78,7 +78,10 @@ Meteor.methods({
     const scrim = {
       id: uuid(),
       createdAt: new Date(),
-      title, game, platform: game.platform, region, users
+      title, 
+      game, 
+      region, 
+      users
     }
 
     Scrims.insert(scrim)
