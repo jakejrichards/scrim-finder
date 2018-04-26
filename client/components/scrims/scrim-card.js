@@ -44,7 +44,7 @@ class ScrimCard extends Component {
     if(front || frontLoading) {
       console.log('1')
       return (
-        <S.Transition key={0} onHide={ this.onHideFront } visible={ front } transitionOnMount animation='browse right' duration={ 250 }>
+        <S.Transition key={0} onHide={ this.onHideFront } visible={ front } transitionOnMount animation='browse right' duration={ 200 }>
           <S.Card onClick={ this.handleFront }>
             <S.Image src={ game.img } />
             <S.Card.Content>
@@ -59,7 +59,7 @@ class ScrimCard extends Component {
     } else if (back || backLoading) {
       console.log('2')
       return (
-        <S.Transition key={1} onHide={ this.onHideBack } visible={ back } transitionOnMount animation='browse right' duration={ 250 }>
+        <S.Transition key={1} onHide={ this.onHideBack } visible={ back } transitionOnMount animation='browse right' duration={ 200 }>
           <S.Card onClick={ this.handleBack }>
             <S.Card.Content>
             <S.Header content={ title } subheader={ game.title } /> 
