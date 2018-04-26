@@ -24,5 +24,6 @@ const App = () => (
 
 Meteor.startup(() => {
   Meteor.subscribe('games')
+  Meteor.subscribe('user')
   ReactDOM.render(<App />, document.querySelector('#target'))
 })

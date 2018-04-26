@@ -22,3 +22,7 @@ semantic:ui-icon
 meteorhacks:aggregate
 react-meteor-data
 aldeed:collection2
+accounts-twitter
+twitter-config-ui
+useraccounts:semantic-ui
+iandouglas:accounts-ui-semantic-ui

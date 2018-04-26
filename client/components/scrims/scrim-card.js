@@ -51,6 +51,21 @@ class ScrimCard extends Component {
               <S.Image size='mini' floated='right' src={ game.platform.img } />
               <S.Card.Header>{ title }</S.Card.Header>
               <S.Card.Meta>{ region }</S.Card.Meta>
+            </S.Card.Content>
+            <S.Card.Content extra><S.Icon name='time' />{ moment(createdAt).fromNow() }</S.Card.Content>
+          </S.Card>
+        </S.Transition>
+      )
+    } else if (back || backLoading) {
+      console.log('2')
+      return (
+        <S.Transition key={1} onHide={ this.onHideBack } visible={ back } transitionOnMount animation='browse right' duration={ 250 }>
+          <S.Card onClick={ this.handleBack }>
+            <S.Card.Content>
+            <S.Header content={ title } subheader={ game.title } /> 
+            </S.Card.Content>
+            <S.Card.Content>
+              <S.Card.Meta>Roster</S.Card.Meta>
               <S.Card.Description>
                 <S.List>
                   { users.map((user, i) => (
@@ -63,18 +78,6 @@ class ScrimCard extends Component {
                   )) }
                 </S.List>
               </S.Card.Description>
-            </S.Card.Content>
-            <S.Card.Content extra><S.Icon name='time' />{ moment(createdAt).fromNow() }</S.Card.Content>
-          </S.Card>
-        </S.Transition>
-      )
-    } else if (back || backLoading) {
-      console.log('2')
-      return (
-        <S.Transition key={1} onHide={ this.onHideBack } visible={ back } transitionOnMount animation='browse right' duration={ 250 }>
-          <S.Card onClick={ this.handleBack }>
-            <S.Card.Content>
-              
             </S.Card.Content>
           </S.Card>
         </S.Transition>

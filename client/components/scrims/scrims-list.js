@@ -16,7 +16,7 @@ class ScrimsList extends Component {
 
     return (
       <div>
-        <S.Card.Group itemsPerRow={ 4 }>
+        <S.Card.Group stackable itemsPerRow={ 4 }>
           { scrims.map((scrim, i) => (
               <ScrimCard key={ scrim.id } { ...scrim } />
           )) }

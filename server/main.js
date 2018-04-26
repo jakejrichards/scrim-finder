@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base'
 import uuid from 'uuid/v4'
 
 import { Games } from '../imports/collections/games'
@@ -20,7 +21,7 @@ const platformNames = {
 const platformImages = {
   'ps4': 'https://vignette.wikia.nocookie.net/althistory/images/9/90/Playstation_logo.png/revision/latest?cb=20121215100331',
   'xb1': 'https://png.icons8.com/metro/1600/xbox.png',
-  'pc': 'https://cdn1.unrealengine.com/UnrealTournament/3475636/com/epicgames/plugins/clientDownload/logo-epic-cb4399a7ee205610531057537937045e.png'
+  'pc': 'http://i.imgur.com/7ZQgwGH.png'
 }
 
 const regions = ['NA East', 'NA West', 'EU', 'Global']
@@ -66,6 +67,10 @@ Meteor.startup(() => {
     }
   }
 
+  Meteor.publish('user', function() {
+    return Meteor.users.find({ _id: this.userId }, { fields: { scrims: 1 } })
+  })
+
   Meteor.publish('games', function() {
     return Games.find()
   })
@@ -85,3 +90,13 @@ Meteor.startup(() => {
   })
 
 });
+
+Accounts.onCreateUser((options, user) => {
+  if (options.profile) {
+    user.profile = options.profile;
+  }
+
+  user.id = uuid()
+  user.scrims = []
+  return user
+})

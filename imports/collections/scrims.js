@@ -63,7 +63,7 @@ const ScrimSchema = new SimpleSchema({
 Scrims.attachSchema(ScrimSchema)
 
 Meteor.methods({
-  'scrims.insert'({ title, gameTitle, platformValue, region, users }) {
+  'scrims.insert'({ title, gameTitle, platformValue, region, users, save }) {
     check(title, String)
     check(gameTitle, String)
     check(platformValue, String)
@@ -82,6 +82,10 @@ Meteor.methods({
       game, 
       region, 
       users
+    }
+
+    if (save) {
+      Meteor.users.update(this.userId, { $push: { scrims: scrim } })
     }
 
     Scrims.insert(scrim)
