@@ -12,8 +12,8 @@ class Menu extends Component {
   render() {
     return (
       <S.Menu size='large' fluid borderless>
-        <Item to='/'>
-          <S.Header>Esports Finder</S.Header>
+        <Item to='/' color='teal'>
+          <S.Header as='h3'><span style={{ color: '#00b5ad' }}>scrims</span>.<span style={{ color: '#db2828'}}>win</span></S.Header>
         </Item>
         <Item to='/scrims'>Find Scrims</Item>
         <S.Menu.Menu position='right'>

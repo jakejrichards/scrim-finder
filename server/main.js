@@ -5,12 +5,18 @@ import uuid from 'uuid/v4'
 import { Games } from '../imports/collections/games'
 import { Scrims } from '../imports/collections/scrims'
 
-// refres
+// refreshh
 
-const games = ['Fortnite Battle Royale', 'Call of Duty WWII']
+const games = ['Fortnite Battle Royale', 'Call of Duty WWII', 'CS:GO', 'Halo 5', 'Gears of War 4', 'Rainbow Six Siege', 'Overwatch', 'League of Legends']
 const gameImages = {
-  'Fortnite Battle Royale': 'https://articles-images.sftcdn.net/wp-content/uploads/sites/3/2018/04/fortnite-pc-1024x576-1024x576.jpg',
-  'Call of Duty WWII': 'https://blackfridayhits.com/wp-content/uploads/2017/09/Call-of-Duty-WWII-Black-Friday.jpg'
+  'Fortnite Battle Royale': '/images/fortnite.jpg',
+  'Call of Duty WWII': '/images/codww2.jpg',
+  'CS:GO': '/images/csgo.jpg',
+  'Halo 5': '/images/halo5.jpg',
+  'Gears of War 4': '/images/gow4.png',
+  'Rainbow Six Siege': '/images/r6siege.jpg',
+  'Overwatch': '/images/overwatch.jpg',
+  'League of Legends': '/images/lol.jpg'
 }
 const platforms = ['ps4', 'xb1', 'pc']
 const platformNames = {
@@ -19,14 +25,14 @@ const platformNames = {
   'pc': 'PC'
 }
 const platformImages = {
-  'ps4': 'https://vignette.wikia.nocookie.net/althistory/images/9/90/Playstation_logo.png/revision/latest?cb=20121215100331',
-  'xb1': 'https://png.icons8.com/metro/1600/xbox.png',
-  'pc': 'http://i.imgur.com/7ZQgwGH.png'
+  'ps4': '/images/ps4.png',
+  'xb1': '/images/xb1.png',
+  'pc': '/images/pc.jpg'
 }
 
 const regions = ['NA East', 'NA West', 'EU', 'Global']
 
-const users = ['Consisttt', 'GuyIsOnline', 'NeverOutslayed']
+const users = ['Jake', 'Alex', 'Luke']
 
 Meteor.startup(() => {
   
@@ -49,23 +55,23 @@ Meteor.startup(() => {
     }
   }
 
-  const scrimsCount = Scrims.find().count()
-  if (scrimsCount === 0) {
-    for (let i = 0; i < 500; i++) {
-      const user1 = users[Math.floor(Math.random()*users.length)]
-      const user2 = users[Math.floor(Math.random()*users.length)]
-      const [ game ] = Games.aggregate([ { $sample: { size: 1 } } ])
-      const scrim = {
-        id: uuid(),
-        createdAt: new Date(),
-        users: [ user1, user2 ],
-        title: '2v2 Scrim',
-        region: regions[Math.floor(Math.random() * regions.length)],
-        game
-      }
-      Scrims.insert(scrim)
-    }
-  }
+  // const scrimsCount = Scrims.find().count()
+  // if (scrimsCount === 0) {
+  //   for (let i = 0; i < 500; i++) {
+  //     const user1 = users[Math.floor(Math.random()*users.length)]
+  //     const user2 = users[Math.floor(Math.random()*users.length)]
+  //     const [ game ] = Games.aggregate([ { $sample: { size: 1 } } ])
+  //     const scrim = {
+  //       id: uuid(),
+  //       createdAt: new Date(),
+  //       users: [ user1, user2 ],
+  //       title: '2v2 Scrim',
+  //       region: regions[Math.floor(Math.random() * regions.length)],
+  //       game
+  //     }
+  //     Scrims.insert(scrim)
+  //   }
+  // }
 
   Meteor.publish('user', function() {
     return Meteor.users.find({ _id: this.userId }, { fields: { scrims: 1 } })

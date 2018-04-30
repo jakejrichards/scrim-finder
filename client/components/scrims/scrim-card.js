@@ -37,6 +37,21 @@ class ScrimCard extends Component {
     this.setState({ front: true, backLoading: false })
   }
 
+  onClickShare = (e) => {
+    e.stopPropagation()
+    const { title, region, createdAt, users, game } = this.props
+    let tweet = `${title}\n${ game.platform.value.toUpperCase() } - ${ game.title }\nRegion - ${ region }\nRoster - `
+    let usersStr = ''
+    users.forEach(user => {
+      usersStr += user + ', '
+    })
+    tweet += usersStr
+    tweet = tweet.substring(0, tweet.length - 2)
+    tweet += '\n\nvia @EsportsFinder esportsfinder.com'
+    tweet = encodeURI(tweet)
+    window.open('https://twitter.com/intent/tweet?text=' + tweet, '_blank')
+  }
+
   render() {
     const { title, region, createdAt, users, game } = this.props
     const { front, back, frontLoading, backLoading } = this.state
@@ -46,13 +61,19 @@ class ScrimCard extends Component {
       return (
         <S.Transition key={0} onHide={ this.onHideFront } visible={ front } transitionOnMount animation='browse right' duration={ 200 }>
           <S.Card onClick={ this.handleFront }>
-            <S.Image src={ game.img } />
+            <S.Container style={{ height: '10rem', backgroundPosition: 'center center', backgroundSize: 'cover', backgroundImage: `url(${game.img})` }} />
             <S.Card.Content>
               <S.Image size='mini' floated='right' src={ game.platform.img } />
               <S.Card.Header>{ title }</S.Card.Header>
               <S.Card.Meta>{ region }</S.Card.Meta>
             </S.Card.Content>
-            <S.Card.Content extra><S.Icon name='time' />{ moment(createdAt).fromNow() }</S.Card.Content>
+            <S.Card.Content extra>
+              <S.Icon name='time' />{ moment(createdAt).fromNow() }
+              <S.Label size='small' color='blue' onClick={ this.onClickShare } attached='bottom right'>
+                <S.Icon name='share' />
+                Share
+              </S.Label>
+            </S.Card.Content>
           </S.Card>
         </S.Transition>
       )
@@ -62,7 +83,9 @@ class ScrimCard extends Component {
         <S.Transition key={1} onHide={ this.onHideBack } visible={ back } transitionOnMount animation='browse right' duration={ 200 }>
           <S.Card onClick={ this.handleBack }>
             <S.Card.Content>
-            <S.Header content={ title } subheader={ game.title } /> 
+              <S.Image size='mini' floated='right' src={ game.platform.img } />
+              <S.Card.Header>{ title }</S.Card.Header>
+              <S.Card.Meta>{ game.title }</S.Card.Meta>
             </S.Card.Content>
             <S.Card.Content>
               <S.Card.Meta>Roster</S.Card.Meta>

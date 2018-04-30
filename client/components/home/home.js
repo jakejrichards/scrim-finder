@@ -1,17 +1,9 @@
 import React, { Component } from 'react'
+import { withTracker } from 'meteor/react-meteor-data'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import S from 'semantic-ui-react'
 
-const games = [
-  { title: 'Fortnite', image: 'https://articles-images.sftcdn.net/wp-content/uploads/sites/3/2018/04/fortnite-pc-1024x576-1024x576.jpg' },
-  { title: 'WW2', image: 'https://blackfridayhits.com/wp-content/uploads/2017/09/Call-of-Duty-WWII-Black-Friday.jpg' },
-  { title: 'CS:GO', image: 'http://esportsjunkie.com/wp-content/uploads/2017/07/CSGO-Logo.jpg' },
-  { title: 'Overwatch', image: 'http://i0.kym-cdn.com/entries/icons/original/000/019/337/verwatch.jpg' },
-  { title: 'Fortnite', image: 'https://articles-images.sftcdn.net/wp-content/uploads/sites/3/2018/04/fortnite-pc-1024x576-1024x576.jpg' },
-  { title: 'WW2', image: 'https://blackfridayhits.com/wp-content/uploads/2017/09/Call-of-Duty-WWII-Black-Friday.jpg' },
-  { title: 'CS:GO', image: 'http://esportsjunkie.com/wp-content/uploads/2017/07/CSGO-Logo.jpg' },
-  { title: 'Overwatch', image: 'http://i0.kym-cdn.com/entries/icons/original/000/019/337/verwatch.jpg' }
-]
+import { Games } from '../../../imports/collections/games'
 
 const steps = [
   { key: 1, icon: 'game', title: 'Choose Your Game' },
@@ -27,15 +19,15 @@ const items = [
 
 class Home extends Component {
   render() {
+    const { games } = this.props
     return (
       <S.Container textAlign='center'>
         <S.Header 
           as='h1' 
           style={{ marginTop: '2rem', marginBottom: '2rem' }}
-          content='Welcome to Esports Finder' 
+          content='Welcome to Scrims Win!' 
           subheader='Improve your skills by quickly and easily finding other players to practice against' />
-        <S.Statistic.Group widths='three' items={ items }></S.Statistic.Group>
-        <S.Grid container>
+        <S.Grid stackable container>
           <S.Grid.Row columns={ 1 }>
             <S.Grid.Column>
               <S.Step.Group fluid items={ steps } />
@@ -44,9 +36,9 @@ class Home extends Component {
           <S.Grid.Row columns={ 4 }>
             { games.map((game, i) => (
               <S.Grid.Column key={ i } style={{ marginBottom: '1rem', marginTop: '1rem' }}>
-                <Link to={ `/game/${ game.title }` }>
-                  <S.Card fluid>
-                    <S.Image src={ game.image }></S.Image>
+                <Link to={ `/scrims?game=${ game.title }` }>
+                  <S.Card link fluid>
+                  <S.Container style={{ height: '10rem', backgroundPosition: 'center center', backgroundSize: 'cover', backgroundImage: `url(${game.img})` }} />
                     <S.Card.Content>
                       <S.Card.Header>
                         { game.title }
@@ -59,7 +51,9 @@ class Home extends Component {
           </S.Grid.Row>
           <S.Grid.Row columns={1}>
             <S.Grid.Column>
-              <S.Button color='teal' fluid size='large'>View All Games</S.Button>
+              <Link to='/scrims'>
+                <S.Button color='teal' fluid size='large'>Find Scrims</S.Button>
+              </Link>
             </S.Grid.Column>
           </S.Grid.Row>
         </S.Grid>
@@ -68,4 +62,14 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default withTracker(() => {
+  const games = Games.find({}).fetch()
+  const gameTitles = {}
+  const uniqueGames = games.filter(game => {
+    if (!(game.title in gameTitles)) {
+      gameTitles[game.title] = 1
+      return game
+    }
+  })
+  return { games: uniqueGames }
+})(Home)

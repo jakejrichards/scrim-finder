@@ -1,0 +1,7 @@
+{
+  "galaxy.meteor.com": {
+     "env": {
+       "MONGO_URL": "mongodb://root:T8qomNqjA4E72ATNHt77U5T0XyREbBwR@ds263989.mlab.com:63989/scrims"
+     }
+   }
+}

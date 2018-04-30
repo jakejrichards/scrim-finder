@@ -14,6 +14,24 @@ class ScrimsList extends Component {
   render() {
     const { scrims, scrimsReady, handleLoadMoreClick } = this.props
 
+    if (!scrimsReady) {
+      return (
+        <S.Segment basic padded='very'>
+          <S.Dimmer active inverted>
+            <S.Loader size='medium' />
+          </S.Dimmer>
+        </S.Segment>
+      )
+    }
+
+    if (scrims.length === 0) {
+      return (
+        <S.Segment textAlign='center' basic>
+          <S.Header style={{ fontStyle: 'italic' }} content='No scrims found.' subheader='Please try changing the scrim filters.' />
+        </S.Segment>
+      )
+    }
+
     return (
       <div>
         <S.Card.Group stackable itemsPerRow={ 4 }>

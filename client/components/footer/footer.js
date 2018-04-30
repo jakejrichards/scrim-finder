@@ -8,26 +8,15 @@ const Footer = () => (
       <S.Grid divided inverted stackable>
         <S.Grid.Row>
           <S.Grid.Column width={3}>
-            <S.Header inverted as='h4' content='About' />
+            <S.Header inverted as='h4' content='Follow Us' />
             <S.List link inverted>
-              <S.List.Item as='a'>Sitemap</S.List.Item>
-              <S.List.Item as='a'>Contact Us</S.List.Item>
-              <S.List.Item as='a'>Religious Ceremonies</S.List.Item>
-              <S.List.Item as='a'>Gazebo Plans</S.List.Item>
-            </S.List>
-          </S.Grid.Column>
-          <S.Grid.Column width={3}>
-            <S.Header inverted as='h4' content='Services' />
-            <S.List link inverted>
-              <S.List.Item as='a'>Banana Pre-Order</S.List.Item>
-              <S.List.Item as='a'>DNA FAQ</S.List.Item>
-              <S.List.Item as='a'>How To Access</S.List.Item>
-              <S.List.Item as='a'>Favorite X-Men</S.List.Item>
+              <S.List.Item as='a' target='_blank' href='https://twitter.com/esportsfinder'>Twitter</S.List.Item>
             </S.List>
           </S.Grid.Column>
           <S.Grid.Column width={7}>
-            <S.Header as='h4' inverted>Footer Header</S.Header>
-            <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+            <S.Header as='h4' inverted>Scrims Win Information</S.Header>
+            <p>For business inquiries please contact<br/>jake@scrims.win</p>
+            <p>Copyright ScrimsWin 2018. All Rights Reserved.</p>
           </S.Grid.Column>
         </S.Grid.Row>
       </S.Grid>

@@ -33,6 +33,7 @@ class ScrimsComponent extends Component {
     super(props)
     const { scrimsHandle, scrimsReady } = props
     const { game, platform, region } = qs.parse(props.location.search)
+    console.log(game)
     this.state = {
       scrimsCount: 12,
       filterGameTitle: game ? game : '',
@@ -70,7 +71,7 @@ class ScrimsComponent extends Component {
         <S.Header 
           style={{ marginBottom: '2rem', marginTop: '2rem' }} 
           as='h1' 
-          content='Scrim Finder' 
+          content='Find Scrims' 
           subheader='Seamlessly find and post scrims to improve your skills' />
         <S.Select search button
           onChange={ (e, data) => this.setState({ filterGameTitle: data.value, scrimsCount: 12 })} 
@@ -106,7 +107,7 @@ class ScrimsComponent extends Component {
           region={ filterRegion }
           handleLoadMoreClick={ this.handleLoadMoreClick } />
         <ScrimModal open={ scrimModalOpen } content={ scrimModalContent } onClose={ () => this.setState({ scrimModalOpen: false }) } />
-        <S.Advertisement centered unit='panorama' test='Panorama' />
+        <S.Advertisement style={{ maxWidth: '100%' }} centered unit='panorama' test='Your Ad Here!' />
       </S.Container>
     )
   }
