@@ -47,7 +47,7 @@ class ScrimCard extends Component {
     })
     tweet += usersStr
     tweet = tweet.substring(0, tweet.length - 2)
-    tweet += '\n\nvia @EsportsFinder esportsfinder.com'
+    tweet += '\n\nvia @scrimswin http://scrims.win'
     tweet = encodeURI(tweet)
     window.open('https://twitter.com/intent/tweet?text=' + tweet, '_blank')
   }
@@ -64,7 +64,7 @@ class ScrimCard extends Component {
             <S.Container style={{ height: '10rem', backgroundPosition: 'center center', backgroundSize: 'cover', backgroundImage: `url(${game.img})` }} />
             <S.Card.Content>
               <S.Image size='mini' floated='right' src={ game.platform.img } />
-              <S.Card.Header>{ title }</S.Card.Header>
+              <S.Card.Header style={{ maxWidth: '100%', wordWrap: 'break-word' }}>{ title.substring(0, 25) }</S.Card.Header>
               <S.Card.Meta>{ region }</S.Card.Meta>
             </S.Card.Content>
             <S.Card.Content extra>
@@ -84,7 +84,7 @@ class ScrimCard extends Component {
           <S.Card onClick={ this.handleBack }>
             <S.Card.Content>
               <S.Image size='mini' floated='right' src={ game.platform.img } />
-              <S.Card.Header>{ title }</S.Card.Header>
+              <S.Card.Header style={{ maxWidth: '100%', wordWrap: 'break-word' }}>{ title.substring(0, 25) }</S.Card.Header>
               <S.Card.Meta>{ game.title }</S.Card.Meta>
             </S.Card.Content>
             <S.Card.Content>

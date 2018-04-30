@@ -111,7 +111,7 @@ class ScrimForm extends Component {
         }
         <S.Form.Field>
           <label>Title</label>
-          <input onChange={ (e) => this.setState({ titleInput: e.target.value })} value={ titleInput } placeholder='2v2 Scrim' />
+          <input onChange={ (e) => this.setState({ titleInput: e.target.value })} value={ titleInput } placeholder='2v2 Scrim (max characters - 25)' />
         </S.Form.Field>
         <S.Form.Group widths='equal'>
           <S.Form.Field>

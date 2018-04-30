@@ -10,7 +10,7 @@ const Footer = () => (
           <S.Grid.Column width={3}>
             <S.Header inverted as='h4' content='Follow Us' />
             <S.List link inverted>
-              <S.List.Item as='a' target='_blank' href='https://twitter.com/esportsfinder'>Twitter</S.List.Item>
+              <S.List.Item as='a' target='_blank' href='https://twitter.com/scrimswin'>Twitter</S.List.Item>
             </S.List>
           </S.Grid.Column>
           <S.Grid.Column width={7}>
