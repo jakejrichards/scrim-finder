@@ -33,7 +33,6 @@ class ScrimForm extends Component {
       savedValue: '',
       save: false
     }
-    console.log(Meteor.user())
   }
 
   handlePlayerInputChange = (e) => {

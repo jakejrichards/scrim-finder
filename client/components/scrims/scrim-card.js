@@ -16,24 +16,20 @@ class ScrimCard extends Component {
   }
 
   handleFront = (e) => {
-    console.log('front')
     e.stopPropagation()
     this.setState({ front: false, frontLoading: true })
   }
 
   onHideFront = () => {
-    console.log('front hide')
     this.setState({ back: true, frontLoading: false })
   }
 
   handleBack = (e) => {
-    console.log('back')
     e.stopPropagation()
     this.setState({ back: false, backLoading: true })
   }
 
   onHideBack = () => {
-    console.log('back hide')
     this.setState({ front: true, backLoading: false })
   }
 
@@ -57,7 +53,6 @@ class ScrimCard extends Component {
     const { front, back, frontLoading, backLoading } = this.state
 
     if(front || frontLoading) {
-      console.log('1')
       return (
         <S.Transition key={0} onHide={ this.onHideFront } visible={ front } transitionOnMount animation='browse right' duration={ 200 }>
           <S.Card onClick={ this.handleFront }>
@@ -78,7 +73,6 @@ class ScrimCard extends Component {
         </S.Transition>
       )
     } else if (back || backLoading) {
-      console.log('2')
       return (
         <S.Transition key={1} onHide={ this.onHideBack } visible={ back } transitionOnMount animation='browse right' duration={ 200 }>
           <S.Card onClick={ this.handleBack }>

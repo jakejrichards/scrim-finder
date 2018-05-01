@@ -6,7 +6,6 @@ import moment from 'moment'
 
 const ScrimModal = ({ content, open, onClose }) => { 
   const { title, region, createdAt, users, game } = content
-  console.log(content)
   
   if (!open) {
     return null

@@ -33,7 +33,6 @@ class ScrimsComponent extends Component {
     super(props)
     const { scrimsHandle, scrimsReady } = props
     const { game, platform, region } = qs.parse(props.location.search)
-    console.log(game)
     this.state = {
       scrimsCount: 12,
       filterGameTitle: game ? game : '',
@@ -63,7 +62,6 @@ class ScrimsComponent extends Component {
 
   render() {
     const { games } = this.props
-    console.log(games)
     const { scrimModalContent, scrimModalOpen, formModalOpen, scrimsCount, filterGameTitle, filterPlatformValue, filterRegion } = this.state
 
     return (
