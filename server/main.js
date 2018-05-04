@@ -36,42 +36,42 @@ const users = ['Jake', 'Alex', 'Luke']
 
 Meteor.startup(() => {
 
-  const gamesCount = Games.find().count()
-  if (gamesCount === 0) {
-    for (let game of games) {
-      for (let platform of platforms) {
-        const g = {
-          id: uuid(),
-          title: game,
-          img: gameImages[game],
-          platform: {
-            value: platform,
-            title: platformNames[platform],
-            img: platformImages[platform]
-          }
-        }
-        Games.insert(g)
-      }
-    }
-  }
+  // const gamesCount = Games.find().count()
+  // if (gamesCount === 0) {
+  //   for (let game of games) {
+  //     for (let platform of platforms) {
+  //       const g = {
+  //         id: uuid(),
+  //         title: game,
+  //         img: gameImages[game],
+  //         platform: {
+  //           value: platform,
+  //           title: platformNames[platform],
+  //           img: platformImages[platform]
+  //         }
+  //       }
+  //       Games.insert(g)
+  //     }
+  //   }
+  // }
 
-  const scrimsCount = Scrims.find().count()
-  if (scrimsCount === 0) {
-    for (let i = 0; i < 500; i++) {
-      const user1 = users[Math.floor(Math.random()*users.length)]
-      const user2 = users[Math.floor(Math.random()*users.length)]
-      const [ game ] = Games.aggregate([ { $sample: { size: 1 } } ])
-      const scrim = {
-        id: uuid(),
-        createdAt: new Date(),
-        users: [ user1, user2 ],
-        title: '2v2 Scrim',
-        region: regions[Math.floor(Math.random() * regions.length)],
-        game
-      }
-      Scrims.insert(scrim)
-    }
-  }
+  // const scrimsCount = Scrims.find().count()
+  // if (scrimsCount === 0) {
+  //   for (let i = 0; i < 500; i++) {
+  //     const user1 = users[Math.floor(Math.random()*users.length)]
+  //     const user2 = users[Math.floor(Math.random()*users.length)]
+  //     const [ game ] = Games.aggregate([ { $sample: { size: 1 } } ])
+  //     const scrim = {
+  //       id: uuid(),
+  //       createdAt: new Date(),
+  //       users: [ user1, user2 ],
+  //       title: '2v2 Scrim',
+  //       region: regions[Math.floor(Math.random() * regions.length)],
+  //       game
+  //     }
+  //     Scrims.insert(scrim)
+  //   }
+  // }
 
   Meteor.publish('user', function() {
     return Meteor.users.find({ _id: this.userId }, { fields: { scrims: 1 } })
