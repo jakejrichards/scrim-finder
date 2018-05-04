@@ -4,23 +4,41 @@ import S from 'semantic-ui-react'
 
 import AccountsUIWrapper from '../accounts/AccountsUIWrapper'
 
-const Item = ({ to, children }) => (
-  <Link to={ to } className='item'>{ children }</Link>
+const Item = ({ to, children, onClick }) => (
+  <Link to={ to } onClick={ onClick } className='item'>{ children }</Link>
 )
 
 class Menu extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      visible: false
+    }
+  }
+  open = () => this.setState({ visible: true })
+  close = () => this.setState({ visible: false })
   render() {
     return (
       <S.Menu size='large' fluid borderless>
-        <Item to='/' color='teal'>
-          <S.Header as='h3'><span style={{ color: '#00b5ad' }}>scrims</span>.<span style={{ color: '#db2828'}}>win</span></S.Header>
-        </Item>
-        <Item to='/scrims'>Find Scrims</Item>
-        <S.Menu.Menu position='right'>
-          <S.Menu.Item fitted>
+        <S.Menu.Item fitted>
+          <S.Button style={{ border: 0, boxShadow: 'none' }} basic icon onClick={ this.open }>
+            <S.Icon size='large' style={{ margin: 0 }} name='bars' />
+          </S.Button>
+        </S.Menu.Item>
+        <S.Sidebar as={ S.Menu } animation='overlay' visible={ this.state.visible } vertical>
+          <S.Menu.Header>
+            <S.Button floated='right' style={{ border: 0, boxShadow: 'none' }} basic icon onClick={ this.close }>
+              <S.Icon size='large' style={{ margin: 0 }} name='x' />
+            </S.Button>
+          </S.Menu.Header>
+          <Item onClick={ this.close } to='/'>
+            <S.Header as='h2'>Scrims Win</S.Header>
+          </Item>
+          <Item onClick={ this.close } to='/scrims'>Find Scrims</Item>
+          <S.Menu.Item>
             <AccountsUIWrapper />
           </S.Menu.Item>
-        </S.Menu.Menu>
+        </S.Sidebar>
       </S.Menu>
     )
   }

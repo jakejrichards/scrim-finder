@@ -56,7 +56,7 @@ class ScrimCard extends Component {
       return (
         <S.Transition key={0} onHide={ this.onHideFront } visible={ front } transitionOnMount animation='browse right' duration={ 200 }>
           <S.Card onClick={ this.handleFront }>
-            <S.Container style={{ height: '10rem', backgroundPosition: 'center center', backgroundSize: 'cover', backgroundImage: `url(${game.img})` }} />
+            <div style={{ height: '10rem', backgroundPosition: 'center center', backgroundSize: 'cover', backgroundImage: `url(${game.img})` }}></div>
             <S.Card.Content>
               <S.Image size='mini' floated='right' src={ game.platform.img } />
               <S.Card.Header style={{ maxWidth: '100%', wordWrap: 'break-word' }}>{ title.substring(0, 25) }</S.Card.Header>

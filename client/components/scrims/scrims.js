@@ -15,14 +15,14 @@ import ScrimsList from './scrims-list'
 
 const platforms = [
   { key: 0, value: '', text: 'All Platforms' },
-  { key: 1, value: 'ps4', text: 'Playstation 4' }, 
+  { key: 1, value: 'ps4', text: 'Playstation 4' },
   { key: 2, value: 'xb1', text: 'Xbox One' },
   { key: 3, value: 'pc', text: 'PC' }
 ]
 
 const regions = [
   { key: 0, value: '', text: 'All Regions' },
-  { key: 1, value: 'NA East', text: 'NA East' }, 
+  { key: 1, value: 'NA East', text: 'NA East' },
   { key: 2, value: 'NA West', text: 'NA West' },
   { key: 3, value: 'EU', text: 'EU' },
   { key: 4, value: 'Global', text: 'Global' }
@@ -66,29 +66,42 @@ class ScrimsComponent extends Component {
 
     return (
       <S.Container>
-        <S.Header 
-          style={{ marginBottom: '2rem', marginTop: '2rem' }} 
-          as='h1' 
-          content='Find Scrims' 
+        <S.Header
+          style={{ marginBottom: '2rem', marginTop: '2rem' }}
+          as='h1'
+          content='Find Scrims'
           subheader='Seamlessly find and post scrims to improve your skills' />
-        <S.Select search button
-          onChange={ (e, data) => this.setState({ filterGameTitle: data.value, scrimsCount: 12 })} 
-          value={ filterGameTitle } 
-          placeholder='Select Game' 
-          options={ [{ key: -1, value: '', text: 'All Games' }].concat(games.map((game, i) => {
-            return { key: i, value: game, text: game }
-          })) } />
-        <S.Select search button
-          onChange={ (e, data) => this.setState({ filterPlatformValue: data.value, scrimsCount: 12 })} 
-          value={ filterPlatformValue } 
-          placeholder='Select Platform' 
-          options={ platforms } />
-        <S.Select search button
-          onChange={ (e, data) => this.setState({ filterRegion: data.value, scrimsCount: 12 })} 
-          value={ filterRegion } 
-          placeholder='Select Region' 
-          options={ regions } />
-        <S.Button color='red' floated='right' content='Post Scrim' labelPosition='left' icon='signup' onClick={ this.handleFormModalButtonClick }></S.Button>
+        <S.Menu stackable borderless style={{ border: 0, boxShadow: 'none' }} widths={6}>
+        <S.Menu.Item>
+          <S.Select search button fluid
+            onChange={ (e, data) => this.setState({ filterGameTitle: data.value, scrimsCount: 12 })}
+            value={ filterGameTitle }
+            placeholder='Select Game'
+            options={ [{ key: -1, value: '', text: 'All Games' }].concat(games.map((game, i) => {
+              return { key: i, value: game, text: game }
+            })) } />
+        </S.Menu.Item>
+        <S.Menu.Item>
+          <S.Select search button fluid
+            onChange={ (e, data) => this.setState({ filterPlatformValue: data.value, scrimsCount: 12 })}
+            value={ filterPlatformValue }
+            placeholder='Select Platform'
+            options={ platforms } />
+        </S.Menu.Item>
+        <S.Menu.Item>
+          <S.Select search button fluid
+            onChange={ (e, data) => this.setState({ filterRegion: data.value, scrimsCount: 12 })}
+            value={ filterRegion }
+            placeholder='Select Region'
+            options={ regions } />
+        </S.Menu.Item>
+        <S.Menu.Item position='right'>
+          <S.Button fluid
+            color='red'
+            content='Post Scrim'
+            onClick={ this.handleFormModalButtonClick } />
+        </S.Menu.Item>
+        </S.Menu>
         <S.Modal size='small' style={{ marginTop: 0, marginLeft: 'auto', marginRight: 'auto' }} open={ formModalOpen } onClose={ () => this.setState({ formModalOpen: false }) }>
           <S.Modal.Header>Post A Scrim</S.Modal.Header>
           <S.Modal.Content>
@@ -98,9 +111,9 @@ class ScrimsComponent extends Component {
           </S.Modal.Content>
         </S.Modal>
         <S.Divider />
-        <ScrimsList 
-          scrimsCount={ scrimsCount } 
-          gameTitle={ filterGameTitle } 
+        <ScrimsList
+          scrimsCount={ scrimsCount }
+          gameTitle={ filterGameTitle }
           platformValue={ filterPlatformValue }
           region={ filterRegion }
           handleLoadMoreClick={ this.handleLoadMoreClick } />

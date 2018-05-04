@@ -22,10 +22,10 @@ class Home extends Component {
     const { games } = this.props
     return (
       <S.Container textAlign='center'>
-        <S.Header 
-          as='h1' 
+        <S.Header
+          as='h1'
           style={{ marginTop: '2rem', marginBottom: '2rem' }}
-          content='Welcome to Scrims Win!' 
+          content='Welcome to Scrims Win!'
           subheader='Improve your skills by quickly and easily finding other players to practice against' />
         <S.Grid stackable container>
           <S.Grid.Row columns={ 1 }>
@@ -38,7 +38,7 @@ class Home extends Component {
               <S.Grid.Column key={ i } style={{ marginBottom: '1rem', marginTop: '1rem' }}>
                 <Link to={ `/scrims?game=${ game.title }` }>
                   <S.Card link fluid>
-                  <S.Container style={{ height: '10rem', backgroundPosition: 'center center', backgroundSize: 'cover', backgroundImage: `url(${game.img})` }} />
+                  <div style={{ height: '10rem', backgroundPosition: 'center center', backgroundSize: 'cover', backgroundImage: `url(${game.img})` }}></div>
                     <S.Card.Content>
                       <S.Card.Header>
                         { game.title }

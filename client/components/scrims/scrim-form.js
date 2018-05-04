@@ -9,13 +9,23 @@ import moment from 'moment'
 import { Games } from '../../../imports/collections/games'
 
 const platforms = [
-  { key: 1, value: 'ps4', text: 'Playstation 4' }, 
+  { key: 1, value: 'ps4', text: 'Playstation 4' },
   { key: 2, value: 'xb1', text: 'Xbox One' },
   { key: 3, value: 'pc', text: 'PC' }
 ]
 
+
+
+const titles = [
+  { key: 1, value: '1v1 Scrim', text: '1v1 Scrim' },
+  { key: 2, value: '2v2 Scrim', text: '2v2 Scrim' },
+  { key: 3, value: '3v3 Scrim', text: '3v3 Scrim' },
+  { key: 4, value: '4v4 Scrim', text: '4v4 Scrim' },
+  { key: 5, value: '5v5 Scrim', text: '5v5 Scrim' }
+]
+
 const regions = [
-  { key: 1, value: 'NA East', text: 'NA East' }, 
+  { key: 1, value: 'NA East', text: 'NA East' },
   { key: 2, value: 'NA West', text: 'NA West' },
   { key: 3, value: 'EU', text: 'EU' },
   { key: 4, value: 'Global', text: 'Global' }
@@ -66,11 +76,11 @@ class ScrimForm extends Component {
     e.preventDefault()
     const { handleScrimFormSubmit } = this.props
     const { playerInputs, titleInput, gameInput, platformInput, regionInput, save } = this.state
-    Meteor.call('scrims.insert', { 
-      users: playerInputs, 
-      title: titleInput, 
-      gameTitle: gameInput, 
-      platformValue: platformInput, 
+    Meteor.call('scrims.insert', {
+      users: playerInputs,
+      title: titleInput,
+      gameTitle: gameInput,
+      platformValue: platformInput,
       region: regionInput,
       save
     })
@@ -81,7 +91,7 @@ class ScrimForm extends Component {
     const savedScrim = JSON.parse(data.value)
     const { game, region, title, users } = savedScrim
 
-    this.setState({ 
+    this.setState({
       savedValue: data.value,
       playerInputs: users,
       titleInput: title,
@@ -99,26 +109,22 @@ class ScrimForm extends Component {
         { !!Meteor.userId() ?
           <S.Form.Field>
             <label>Select A Saved Scrim</label>
-            <S.Select 
-              onChange={ this.handleSelectSavedScrim } 
+            <S.Select
+              onChange={ this.handleSelectSavedScrim }
               value={ savedValue }
-              placeholder='Select A Saved Scrim' 
+              placeholder='Select A Saved Scrim'
               options={ Meteor.user().scrims.map(scrim => {
                 return { key: scrim.id, value: JSON.stringify(scrim), text: scrim.title }
               }) } />
           </S.Form.Field> : ''
         }
-        <S.Form.Field>
-          <label>Title</label>
-          <input onChange={ (e) => this.setState({ titleInput: e.target.value })} value={ titleInput } placeholder='2v2 Scrim (max characters - 25)' />
-        </S.Form.Field>
         <S.Form.Group widths='equal'>
           <S.Form.Field>
             <label>Players</label>
             { playerInputs.map((player, i) => (
               <input onChange={ this.handlePlayerInputChange } value={ playerInputs[i] } player={ i } key={ i } style={{ marginBottom: '.5rem' }} placeholder='Player Username' />
             )) }
-            { 
+            {
               playerInputs.length < 5
               ? <S.Button type='button' onClick={ this.addPlayerInput } style={{ marginTop: '.5rem' }} color='teal' size='mini' labelPosition='left' icon='plus' content='Add Player'/>
               : ''
@@ -130,7 +136,9 @@ class ScrimForm extends Component {
             }
           </S.Form.Field>
           <S.Form.Field>
-            <label>Game</label>
+            <label>Title</label>
+            <S.Select onChange={ (e, data) => this.setState({ titleInput: data.value })} value={ titleInput } placeholder='Scrim Title' options={ titles } />
+            <label style={{ marginTop: '1rem' }}>Game</label>
             <S.Dropdown onChange={ (e, data) => this.setState({ gameInput: data.value })} value={ gameInput } placeholder='Game' search selection options={ games.map((game, i) => {
               return { key: i, value: game, text: game }
             }) } />
@@ -141,7 +149,7 @@ class ScrimForm extends Component {
           </S.Form.Field>
         </S.Form.Group>
         <S.Form.Field>
-        { !!Meteor.userId() 
+        { !!Meteor.userId()
           ? <S.Checkbox color='red' onChange={ () => this.setState({ save: !save }) } checked={ save } slider label='Save scrim for future use' />
           : <S.Label onClick={ this.handleLoginLabelClick } as='a' content='Login to save scrims' color='blue' icon='chevron right' />
         }
