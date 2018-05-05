@@ -41,7 +41,12 @@ class ScrimForm extends Component {
       platformInput: '',
       regionInput: '',
       savedValue: '',
-      save: false
+      save: false,
+      playerError: false,
+      titleError: false,
+      gameError: false,
+      platformError: false,
+      regionError: false
     }
   }
 
@@ -74,17 +79,41 @@ class ScrimForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
+    let err = false
     const { handleScrimFormSubmit } = this.props
     const { playerInputs, titleInput, gameInput, platformInput, regionInput, save } = this.state
-    Meteor.call('scrims.insert', {
-      users: playerInputs,
-      title: titleInput,
-      gameTitle: gameInput,
-      platformValue: platformInput,
-      region: regionInput,
-      save
-    })
-    handleScrimFormSubmit()
+    let playerError = false, titleError = false, gameError = false, platformError = false, regionError = false
+
+    if (playerInputs.length === 1 && !playerInputs[0]) {
+      playerError = true
+    }
+    if (!titleInput) {
+      titleError = true
+    }
+    if (!gameInput) {
+      gameError = true
+    }
+    if (!platformInput) {
+      platformError = true
+    }
+    if (!regionInput) {
+      regionError = true
+    }
+    this.setState({ playerError, titleError, gameError, platformError, regionError })
+    if (!(playerError || titleError || gameError || platformError || regionError)) {
+      Meteor.call('scrims.insert', {
+        users: playerInputs,
+        title: titleInput,
+        gameTitle: gameInput,
+        platformValue: platformInput,
+        region: regionInput,
+        save
+      }, err => {
+        if (!err) {
+          handleScrimFormSubmit()
+        }
+      })
+    }
   }
 
   handleSelectSavedScrim = (e, data) => {
@@ -103,7 +132,7 @@ class ScrimForm extends Component {
 
   render() {
     const { games } = this.props
-    const { playerInputs, titleInput, gameInput, platformInput, regionInput, savedValue, save } = this.state
+    const { playerInputs, titleInput, gameInput, platformInput, regionInput, savedValue, save, playerError, titleError, gameError, platformError, regionError } = this.state
     return (
       <S.Form onSubmit={ this.handleSubmit }>
         { !!Meteor.userId() ?
@@ -119,7 +148,7 @@ class ScrimForm extends Component {
           </S.Form.Field> : ''
         }
         <S.Form.Group widths='equal'>
-          <S.Form.Field>
+          <S.Form.Field error={ playerError }>
             <label>Players</label>
             { playerInputs.map((player, i) => (
               <input onChange={ this.handlePlayerInputChange } value={ playerInputs[i] } player={ i } key={ i } style={{ marginBottom: '.5rem' }} placeholder='Player Username' />
@@ -137,15 +166,15 @@ class ScrimForm extends Component {
           </S.Form.Field>
           <S.Form.Field>
             <label>Title</label>
-            <S.Select onChange={ (e, data) => this.setState({ titleInput: data.value })} value={ titleInput } placeholder='Scrim Title' options={ titles } />
+            <S.Select error={ titleError } onChange={ (e, data) => this.setState({ titleInput: data.value })} value={ titleInput } placeholder='Scrim Title' options={ titles } />
             <label style={{ marginTop: '1rem' }}>Game</label>
-            <S.Dropdown onChange={ (e, data) => this.setState({ gameInput: data.value })} value={ gameInput } placeholder='Game' search selection options={ games.map((game, i) => {
+            <S.Dropdown error={ gameError } onChange={ (e, data) => this.setState({ gameInput: data.value })} value={ gameInput } placeholder='Game' search selection options={ games.map((game, i) => {
               return { key: i, value: game, text: game }
             }) } />
             <label style={{ marginTop: '1rem' }}>Platform</label>
-            <S.Select onChange={ (e, data) => this.setState({ platformInput: data.value })} value={ platformInput } placeholder='Select Platform' options={ platforms }/>
+            <S.Select error={ platformError } onChange={ (e, data) => this.setState({ platformInput: data.value })} value={ platformInput } placeholder='Select Platform' options={ platforms }/>
             <label style={{ marginTop: '1rem' }}>Region</label>
-            <S.Select onChange={ (e, data) => this.setState({ regionInput: data.value })} value={ regionInput } placeholder='Select Region' options={ regions }/>
+            <S.Select error={ regionError } onChange={ (e, data) => this.setState({ regionInput: data.value })} value={ regionInput } placeholder='Select Region' options={ regions }/>
           </S.Form.Field>
         </S.Form.Group>
         <S.Form.Field>
@@ -155,6 +184,8 @@ class ScrimForm extends Component {
         }
         </S.Form.Field>
         <S.Button size='large' fluid type='submit' style={{ marginBottom: '.5rem', marginTop: '.5rem' }}>Submit</S.Button>
+        { (playerError || titleError || gameError || platformError || regionError)
+        ? <S.Message negative><p>Please fill in the missing fields</p></S.Message> : ''}
       </S.Form>
     )
   }
