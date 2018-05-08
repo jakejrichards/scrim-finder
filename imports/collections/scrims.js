@@ -8,6 +8,19 @@ import { Games } from './games'
 
 export const Scrims = new Mongo.Collection('scrims')
 
+const times = {
+  '5min': 300,
+  '15min': 900,
+  '30min': 1800,
+  '45min': 2700,
+  '1hr': 3600,
+  '2hr': 7200,
+  '3hr': 10800,
+  '6hr': 21600,
+  '12hr': 43200,
+  '24hr': 86400
+}
+
 const ScrimSchema = new SimpleSchema({
   id: {
     type: String,
@@ -24,6 +37,10 @@ const ScrimSchema = new SimpleSchema({
   region: {
     type: String,
     label: 'Scrim region'
+  },
+  expiresAt: {
+    type: Date,
+    label: 'Scrim expires at this time'
   },
   game: {
     type: Object
@@ -63,12 +80,19 @@ const ScrimSchema = new SimpleSchema({
 Scrims.attachSchema(ScrimSchema)
 
 Meteor.methods({
-  'scrims.insert'({ title, gameTitle, platformValue, region, users, save }) {
+  'scrims.insert'({ title, expireTime, gameTitle, platformValue, region, users, save }) {
     check(title, String)
     check(gameTitle, String)
     check(platformValue, String)
     check(region, String)
     check(users, Array)
+    check(expireTime, String)
+
+    if (!(expireTime in times)) {
+      throw new Meteor.Error('Not a valid expiration input')
+    }
+    let expiresAt = new Date()
+    expiresAt = new Date(expiresAt.getTime() + (times[expireTime] * 1000))
 
     const game = Games.findOne({ title: gameTitle, 'platform.value': platformValue }, { fields: { title: 1, img: 1, platform: 1, id: 1 } })
     if (!game) {
@@ -78,9 +102,10 @@ Meteor.methods({
     const scrim = {
       id: uuid(),
       createdAt: new Date(),
-      title, 
-      game, 
-      region, 
+      title,
+      game,
+      region,
+      expiresAt,
       users
     }
 

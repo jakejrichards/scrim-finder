@@ -14,8 +14,6 @@ const platforms = [
   { key: 3, value: 'pc', text: 'PC' }
 ]
 
-
-
 const titles = [
   { key: 1, value: '1v1 Scrim', text: '1v1 Scrim' },
   { key: 2, value: '2v2 Scrim', text: '2v2 Scrim' },
@@ -24,11 +22,38 @@ const titles = [
   { key: 5, value: '5v5 Scrim', text: '5v5 Scrim' }
 ]
 
+const expires = [
+  { key: 1, value: '5min', text: '5 minutes' },
+  { key: 2, value: '15min', text: '15 minutes' },
+  { key: 3, value: '30min', text: '30 minutes' },
+  { key: 4, value: '45min', text: '45 minutes' },
+  { key: 5, value: '1hr', text: '1 hour' },
+  { key: 6, value: '2hr', text: '2 hours' },
+  { key: 7, value: '3hr', text: '3 hours' },
+  { key: 8, value: '6hr', text: '6 hours' },
+  { key: 9, value: '12hr', text: '12 hours' },
+  { key: 10, value: '24hr', text: '24 hours' }
+]
+
 const regions = [
+  { key: 0, value: '', text: 'All Regions' },
   { key: 1, value: 'NA East', text: 'NA East' },
   { key: 2, value: 'NA West', text: 'NA West' },
   { key: 3, value: 'EU', text: 'EU' },
-  { key: 4, value: 'Global', text: 'Global' }
+  { key: 4, value: 'APAC', text: 'APAC' },
+  { key: 5, value: 'BR', text: 'BR' },
+  { key: 6, value: 'EUNE', text: 'EUNE' },
+  { key: 7, value: 'EUW', text: 'EUW' },
+  { key: 8, value: 'LAN', text: 'LAN' },
+  { key: 9, value: 'LAS', text: 'LAS' },
+  { key: 10, value: 'OCE', text: 'OCE' },
+  { key: 11, value: 'RU', text: 'RU' },
+  { key: 12, value: 'TR', text: 'TR' },
+  { key: 13, value: 'JP', text: 'JP' },
+  { key: 14, value: 'SEA', text: 'SEA' },
+  { key: 15, value: 'KR', text: 'KR' },
+  { key: 16, value: 'JP', text: 'JP' },
+  { key: 17, value: 'CN', text: 'CN' },
 ]
 
 class ScrimForm extends Component {
@@ -41,12 +66,14 @@ class ScrimForm extends Component {
       platformInput: '',
       regionInput: '',
       savedValue: '',
+      expiresInput: '',
       save: false,
       playerError: false,
       titleError: false,
       gameError: false,
       platformError: false,
-      regionError: false
+      regionError: false,
+      expiresError: false
     }
   }
 
@@ -81,8 +108,8 @@ class ScrimForm extends Component {
     e.preventDefault()
     let err = false
     const { handleScrimFormSubmit } = this.props
-    const { playerInputs, titleInput, gameInput, platformInput, regionInput, save } = this.state
-    let playerError = false, titleError = false, gameError = false, platformError = false, regionError = false
+    const { playerInputs, expiresInput, titleInput, gameInput, platformInput, regionInput, save } = this.state
+    let playerError = false, titleError = false, gameError = false, platformError = false, regionError = false, expiresError = false
 
     if (playerInputs.length === 1 && !playerInputs[0]) {
       playerError = true
@@ -99,14 +126,18 @@ class ScrimForm extends Component {
     if (!regionInput) {
       regionError = true
     }
-    this.setState({ playerError, titleError, gameError, platformError, regionError })
-    if (!(playerError || titleError || gameError || platformError || regionError)) {
+    if (!expiresInput) {
+      expiresError = true
+    }
+    this.setState({ playerError, titleError, gameError, platformError, regionError, expiresError })
+    if (!(playerError || titleError || gameError || platformError || regionError || expiresError)) {
       Meteor.call('scrims.insert', {
         users: playerInputs,
         title: titleInput,
         gameTitle: gameInput,
         platformValue: platformInput,
         region: regionInput,
+        expireTime: expiresInput,
         save
       }, err => {
         if (!err) {
@@ -132,7 +163,7 @@ class ScrimForm extends Component {
 
   render() {
     const { games } = this.props
-    const { playerInputs, titleInput, gameInput, platformInput, regionInput, savedValue, save, playerError, titleError, gameError, platformError, regionError } = this.state
+    const { playerInputs, expiresInput, titleInput, gameInput, platformInput, regionInput, savedValue, save, playerError, expiresError, titleError, gameError, platformError, regionError } = this.state
     return (
       <S.Form onSubmit={ this.handleSubmit }>
         { !!Meteor.userId() ?
@@ -175,6 +206,8 @@ class ScrimForm extends Component {
             <S.Select error={ platformError } onChange={ (e, data) => this.setState({ platformInput: data.value })} value={ platformInput } placeholder='Select Platform' options={ platforms }/>
             <label style={{ marginTop: '1rem' }}>Region</label>
             <S.Select error={ regionError } onChange={ (e, data) => this.setState({ regionInput: data.value })} value={ regionInput } placeholder='Select Region' options={ regions }/>
+            <label style={{ marginTop: '1rem' }}>Expire Time</label>
+            <S.Select error={ expiresError } onChange={ (e, data) => this.setState({ expiresInput: data.value }) } value={ expiresInput } placeholder='How long will you be scrimming?' options={ expires } />
           </S.Form.Field>
         </S.Form.Group>
         <S.Form.Field>

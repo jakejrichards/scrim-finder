@@ -35,7 +35,9 @@ const regions = ['NA East', 'NA West', 'EU', 'Global']
 const users = ['Jake', 'Alex', 'Luke']
 
 Meteor.startup(() => {
-
+  Meteor.setInterval(() => {
+    Scrims.remove({ expiresAt: { $lte: new Date() } })
+  }, 30000)
   // const gamesCount = Games.find().count()
   // if (gamesCount === 0) {
   //   for (let game of games) {

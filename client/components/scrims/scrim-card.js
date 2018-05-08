@@ -49,7 +49,7 @@ class ScrimCard extends Component {
   }
 
   render() {
-    const { title, region, createdAt, users, game } = this.props
+    const { title, region, createdAt, users, game, expiresAt } = this.props
     const { front, back, frontLoading, backLoading } = this.state
 
     if(front || frontLoading) {
@@ -63,7 +63,7 @@ class ScrimCard extends Component {
               <S.Card.Meta>{ region }</S.Card.Meta>
             </S.Card.Content>
             <S.Card.Content extra>
-              <S.Icon name='time' />{ moment(createdAt).fromNow() }
+              <S.Icon name='time' />expires { moment(expiresAt).fromNow() }
               <S.Label size='small' color='blue' onClick={ this.onClickShare } attached='bottom right'>
                 <S.Icon name='share' />
                 Share

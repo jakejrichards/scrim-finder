@@ -25,7 +25,20 @@ const regions = [
   { key: 1, value: 'NA East', text: 'NA East' },
   { key: 2, value: 'NA West', text: 'NA West' },
   { key: 3, value: 'EU', text: 'EU' },
-  { key: 4, value: 'Global', text: 'Global' }
+  { key: 4, value: 'APAC', text: 'APAC' },
+  { key: 5, value: 'BR', text: 'BR' },
+  { key: 6, value: 'EUNE', text: 'EUNE' },
+  { key: 7, value: 'EUW', text: 'EUW' },
+  { key: 8, value: 'LAN', text: 'LAN' },
+  { key: 9, value: 'LAS', text: 'LAS' },
+  { key: 10, value: 'OCE', text: 'OCE' },
+  { key: 11, value: 'RU', text: 'RU' },
+  { key: 12, value: 'TR', text: 'TR' },
+  { key: 13, value: 'JP', text: 'JP' },
+  { key: 14, value: 'SEA', text: 'SEA' },
+  { key: 15, value: 'KR', text: 'KR' },
+  { key: 16, value: 'JP', text: 'JP' },
+  { key: 17, value: 'CN', text: 'CN' },
 ]
 
 class ScrimsComponent extends Component {
