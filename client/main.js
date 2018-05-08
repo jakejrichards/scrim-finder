@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import Analytics from 'react-router-ga'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 import 'semantic-ui-css/semantic.min.css'
@@ -13,12 +14,14 @@ import Scrims from './components/scrims/scrims'
 
 const App = () => (
   <Router>
-    <S.Container fluid>
-      <Menu />
-      <Route exact path='/' component={ Home } />
-      <Route path='/scrims' component={ Scrims } />
-      <Footer />
-    </S.Container>
+    <Analytics id='UA-118892210-1'>
+      <S.Container fluid>
+        <Menu />
+        <Route exact path='/' component={ Home } />
+        <Route path='/scrims' component={ Scrims } />
+        <Footer />
+      </S.Container>
+    </Analytics>
   </Router>
 )
 
