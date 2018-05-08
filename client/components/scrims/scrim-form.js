@@ -36,7 +36,6 @@ const expires = [
 ]
 
 const regions = [
-  { key: 0, value: '', text: 'All Regions' },
   { key: 1, value: 'NA East', text: 'NA East' },
   { key: 2, value: 'NA West', text: 'NA West' },
   { key: 3, value: 'EU', text: 'EU' },

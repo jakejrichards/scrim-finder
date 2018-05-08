@@ -14,16 +14,6 @@ class ScrimsList extends Component {
   render() {
     const { scrims, scrimsReady, handleLoadMoreClick } = this.props
 
-    if (!scrimsReady) {
-      return (
-        <S.Segment basic padded='very'>
-          <S.Dimmer active inverted>
-            <S.Loader size='medium' />
-          </S.Dimmer>
-        </S.Segment>
-      )
-    }
-
     if (scrims.length === 0) {
       return (
         <S.Segment textAlign='center' basic>
@@ -39,12 +29,19 @@ class ScrimsList extends Component {
               <ScrimCard key={ scrim.id } { ...scrim } />
           )) }
         </S.Card.Group>
-        <S.Button fluid
-          onClick={ handleLoadMoreClick } 
-          style={{ marginTop: '2rem', marginBottom: '2rem' }} 
-          color='teal'
-          size='large'>Load More Scrims</S.Button>
-      </div>      
+        { !scrimsReady
+        ? <S.Segment basic padded='very'>
+            <S.Dimmer active inverted>
+              <S.Loader size='medium' />
+            </S.Dimmer>
+          </S.Segment>
+        : <S.Button fluid
+            onClick={ handleLoadMoreClick }
+            style={{ marginTop: '2rem', marginBottom: '2rem' }}
+            color='teal'
+            size='large'>Load More Scrims</S.Button>
+        }
+      </div>
     )
   }
 }
