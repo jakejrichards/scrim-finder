@@ -148,7 +148,7 @@ class ScrimForm extends Component {
 
   handleSelectSavedScrim = (e, data) => {
     const savedScrim = JSON.parse(data.value)
-    const { game, region, title, users } = savedScrim
+    const { game, region, title, users, expireTime } = savedScrim
 
     this.setState({
       savedValue: data.value,
@@ -156,6 +156,7 @@ class ScrimForm extends Component {
       titleInput: title,
       gameInput: game.title,
       platformInput: game.platform.value,
+      expiresInput: expireTime,
       regionInput: region
     })
   }

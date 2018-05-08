@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 import S from 'semantic-ui-react'
 import moment from 'moment'
 
-const ScrimModal = ({ content, open, onClose }) => { 
+const ScrimModal = ({ content, open, onClose }) => {
   const { title, region, createdAt, users, game } = content
-  
+
   if (!open) {
     return null
   }

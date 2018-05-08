@@ -115,7 +115,7 @@ class ScrimsComponent extends Component {
             onClick={ this.handleFormModalButtonClick } />
         </S.Menu.Item>
         </S.Menu>
-        <S.Modal size='small' style={{ marginTop: 0, marginLeft: 'auto', marginRight: 'auto' }} open={ formModalOpen } onClose={ () => this.setState({ formModalOpen: false }) }>
+        <S.Modal closeIcon size='small' style={{ marginTop: '2rem', marginLeft: 'auto', marginRight: 'auto' }} open={ formModalOpen } onClose={ () => this.setState({ formModalOpen: false }) }>
           <S.Modal.Header>Post A Scrim</S.Modal.Header>
           <S.Modal.Content>
             <S.Modal.Description>

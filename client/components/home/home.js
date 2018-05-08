@@ -18,8 +18,20 @@ const items = [
 ]
 
 class Home extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      showMessage: true
+    }
+  }
+
+  dismissMessage = () => {
+    this.setState({ showMessage: false })
+  }
+
   render() {
     const { games } = this.props
+    const { showMessage } = this.state
     return (
       <S.Container textAlign='center'>
         <S.Header
@@ -30,6 +42,17 @@ class Home extends Component {
         <S.Grid stackable container>
           <S.Grid.Row columns={ 1 }>
             <S.Grid.Column>
+            { showMessage ? <S.Message
+              onDismiss={ this.dismissMessage }
+              style={{ textAlign: 'left' }}
+              attached info icon='gift'
+              header='13,500 Fornite V-Bucks Giveaway on our Twitter!'
+              content={ <a href='http://twitter.com/scrimswin/status/993159620674891776' target='_blank'><S.Button
+                style={{ marginTop: '.5rem' }}
+                basic icon='right arrow'
+                labelPosition='right'
+                size='tiny' content='Enter Here' /></a>
+              } /> : '' }
               <S.Step.Group fluid items={ steps } />
             </S.Grid.Column>
           </S.Grid.Row>

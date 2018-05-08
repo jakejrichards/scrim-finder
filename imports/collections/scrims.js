@@ -110,7 +110,7 @@ Meteor.methods({
     }
 
     if (save) {
-      Meteor.users.update(this.userId, { $push: { scrims: scrim } })
+      Meteor.users.update(this.userId, { $push: { scrims: { ...scrim, expireTime } } })
     }
 
     Scrims.insert(scrim)
