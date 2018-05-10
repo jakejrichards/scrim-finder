@@ -21,6 +21,17 @@ const times = {
   '24hr': 86400
 }
 
+const gamePlatforms = {
+  'Fortnite Battle Royale': 'epicgames',
+  'Call of Duty WWII': 'steam',
+  'CS:GO': 'steam',
+  'Halo 5': 'xb1',
+  'Gears of War 4': 'xb1',
+  'Rainbow Six Siege': 'uplay',
+  'Overwatch': 'battlenet',
+  'League of Legends': 'lol'
+}
+
 const ScrimSchema = new SimpleSchema({
   id: {
     type: String,
@@ -33,6 +44,11 @@ const ScrimSchema = new SimpleSchema({
   title: {
     type: String,
     label: "Scrim title"
+  },
+  description: {
+    type: String,
+    optional: true,
+    max: 150
   },
   region: {
     type: String,
@@ -79,8 +95,27 @@ const ScrimSchema = new SimpleSchema({
 })
 Scrims.attachSchema(ScrimSchema)
 
+Scrims.helpers({
+  userAccounts() {
+    let platform = this.game.platform.value
+    if (this.game.platform.value == 'pc') {
+      platform = gamePlatforms[this.game.title]
+    }
+    const accounts = {}
+    this.users.map(user => {
+      const key = `accounts.${ platform }`
+      const value = user
+      const query = {}
+      query[key] = value
+      accounts[user] =  Meteor.users.findOne(query)
+    })
+
+    return accounts
+  }
+})
+
 Meteor.methods({
-  'scrims.insert'({ title, expireTime, gameTitle, platformValue, region, users, save }) {
+  'scrims.insert'({ title, expireTime, gameTitle, platformValue, region, users, save, description }) {
     check(title, String)
     check(gameTitle, String)
     check(platformValue, String)
@@ -99,6 +134,8 @@ Meteor.methods({
       throw new Meteor.Error('Game could not be found')
     }
 
+    console.log(description)
+
     const scrim = {
       id: uuid(),
       createdAt: new Date(),
@@ -108,6 +145,12 @@ Meteor.methods({
       expiresAt,
       users
     }
+
+    if (description) {
+      scrim.description = description
+    }
+
+    console.log(scrim)
 
     if (save) {
       Meteor.users.update(this.userId, { $push: { scrims: { ...scrim, expireTime } } })

@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base'
+import { Mongo } from 'meteor/mongo'
+import { check } from 'meteor/check'
 import uuid from 'uuid/v4'
 
 import { Games } from '../imports/collections/games'
@@ -76,7 +78,11 @@ Meteor.startup(() => {
   // }
 
   Meteor.publish('user', function() {
-    return Meteor.users.find({ _id: this.userId }, { fields: { scrims: 1 } })
+    return Meteor.users.find({ _id: this.userId }, { fields: { scrims: 1, accounts: 1, id: 1, links: 1, bio: 1, profile: 1 } })
+  })
+
+  Meteor.publish('users', function() {
+    return Meteor.users.find({}, { fields: { scrims: 1, accounts: 1, id: 1, links: 1, bio: 1, profile: 1 } })
   })
 
   Meteor.publish('games', function() {
@@ -97,13 +103,46 @@ Meteor.startup(() => {
     return Scrims.find(filter, { limit: scrimsCount, sort: { createdAt: -1 } })
   })
 
-});
+})
+
+Meteor.methods({
+  'updateProfile'({ bio, accounts, links }) {
+    if (!bio) {
+      bio = ''
+    }
+
+    for (let platform in accounts) {
+      const query = {}
+      let key = `accounts.${platform}`
+      query[key] = accounts[platform]
+      if (accounts[platform].length > 0 && Meteor.users.find(query).count() > 0) {
+        throw new Meteor.Error(`${platform} name: ${accounts[platform]} is already linked to a profile. Please contact support if this is your account.`)
+      }
+    }
+
+    console.log(bio, accounts, links, this.userId)
+    const filteredLinks = links.filter(link => (link.title && link.url && link.color))
+    Meteor.users.update({ _id: this.userId}, { $set: { accounts, links: filteredLinks, bio } })
+
+    return { success: 1 }
+  }
+})
 
 Accounts.onCreateUser((options, user) => {
   if (options.profile) {
     user.profile = options.profile;
   }
-
+  user.bio = ''
+  user.links = []
+  user.accounts = {
+    ps4: '',
+    xb1: '',
+    steam: '',
+    lol: '',
+    epicgames: '',
+    uplay: '',
+    battlenet: ''
+  }
   user.id = uuid()
   user.scrims = []
   return user

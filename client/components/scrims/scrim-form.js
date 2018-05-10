@@ -66,6 +66,7 @@ class ScrimForm extends Component {
       regionInput: '',
       savedValue: '',
       expiresInput: '',
+      descriptionInput: '',
       save: false,
       playerError: false,
       titleError: false,
@@ -107,7 +108,7 @@ class ScrimForm extends Component {
     e.preventDefault()
     let err = false
     const { handleScrimFormSubmit } = this.props
-    const { playerInputs, expiresInput, titleInput, gameInput, platformInput, regionInput, save } = this.state
+    const { descriptionInput, playerInputs, expiresInput, titleInput, gameInput, platformInput, regionInput, save } = this.state
     let playerError = false, titleError = false, gameError = false, platformError = false, regionError = false, expiresError = false
 
     if (playerInputs.length === 1 && !playerInputs[0]) {
@@ -137,6 +138,7 @@ class ScrimForm extends Component {
         platformValue: platformInput,
         region: regionInput,
         expireTime: expiresInput,
+        description: descriptionInput,
         save
       }, err => {
         if (!err) {
@@ -163,7 +165,7 @@ class ScrimForm extends Component {
 
   render() {
     const { games } = this.props
-    const { playerInputs, expiresInput, titleInput, gameInput, platformInput, regionInput, savedValue, save, playerError, expiresError, titleError, gameError, platformError, regionError } = this.state
+    const { descriptionInput, playerInputs, expiresInput, titleInput, gameInput, platformInput, regionInput, savedValue, save, playerError, expiresError, titleError, gameError, platformError, regionError } = this.state
     return (
       <S.Form onSubmit={ this.handleSubmit }>
         { !!Meteor.userId() ?
@@ -208,6 +210,8 @@ class ScrimForm extends Component {
             <S.Select error={ regionError } onChange={ (e, data) => this.setState({ regionInput: data.value })} value={ regionInput } placeholder='Select Region' options={ regions }/>
             <label style={{ marginTop: '1rem' }}>Expire Time</label>
             <S.Select error={ expiresError } onChange={ (e, data) => this.setState({ expiresInput: data.value }) } value={ expiresInput } placeholder='How long will you be scrimming?' options={ expires } />
+            <label style={{ marginTop: '1rem' }}>Description (optional)</label>
+            <input onChange={ (e) => this.setState({ descriptionInput: e.target.value }) } value={ descriptionInput } placeholder='Additional information...' />
           </S.Form.Field>
         </S.Form.Group>
         <S.Form.Field>

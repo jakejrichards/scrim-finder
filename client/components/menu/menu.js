@@ -18,6 +18,7 @@ class Menu extends Component {
   open = () => this.setState({ visible: true })
   close = () => this.setState({ visible: false })
   render() {
+    const { loggedIn } = this.props
     return (
       <S.Menu size='large' fluid borderless>
         <S.Menu.Item fitted>
@@ -35,6 +36,7 @@ class Menu extends Component {
             <S.Header as='h2'>Scrims Win</S.Header>
           </Item>
           <Item onClick={ this.close } to='/scrims'>Find Scrims</Item>
+          { loggedIn ? <Item onClick={ this.close } to='/profile'>My Profile</Item> : '' }
           <S.Menu.Item>
             <AccountsUIWrapper />
           </S.Menu.Item>

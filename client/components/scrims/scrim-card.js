@@ -4,6 +4,10 @@ import PropTypes from 'prop-types'
 import S from 'semantic-ui-react'
 import moment from 'moment'
 
+const LinkItem = ({ to, children }) => (
+  <Link className='item' to={ to } children={ children } />
+)
+
 class ScrimCard extends Component {
   constructor(props) {
     super(props)
@@ -49,8 +53,10 @@ class ScrimCard extends Component {
   }
 
   render() {
-    const { title, region, createdAt, users, game, expiresAt } = this.props
+    const { title, region, createdAt, users, game, expiresAt, id, userAccounts, description } = this.props
     const { front, back, frontLoading, backLoading } = this.state
+
+    console.log(description)
 
     if(front || frontLoading) {
       return (
@@ -63,11 +69,12 @@ class ScrimCard extends Component {
               <S.Card.Meta>{ region }</S.Card.Meta>
             </S.Card.Content>
             <S.Card.Content extra>
-              <S.Icon name='time' />expires { moment(expiresAt).fromNow() }
-              <S.Label size='small' color='blue' onClick={ this.onClickShare } attached='bottom right'>
-                <S.Icon name='share' />
-                Share
-              </S.Label>
+              <S.Label.Group size='mini' >
+                <S.Label as='a' basic onClick={ this.onClickShare }>
+                  <S.Icon name='share' />Share
+                </S.Label>
+              </S.Label.Group>
+              <S.Icon name='time' size='small' /><span style={{ fontSize: '.8rem' }}>expires { moment(expiresAt).fromNow() }</span>
             </S.Card.Content>
           </S.Card>
         </S.Transition>
@@ -81,18 +88,30 @@ class ScrimCard extends Component {
               <S.Card.Header style={{ maxWidth: '100%', wordWrap: 'break-word' }}>{ title.substring(0, 25) }</S.Card.Header>
               <S.Card.Meta>{ game.title }</S.Card.Meta>
             </S.Card.Content>
+            { description ?
+            <S.Card.Content description={ description } /> : '' }
             <S.Card.Content>
-              <S.Card.Meta>Roster</S.Card.Meta>
               <S.Card.Description>
-                <S.List>
-                  { users.map((user, i) => (
-                    <S.List.Item key={ i }>
-                      <S.List.Icon name='user' />
-                      <S.List.Content>
-                        <S.List.Header>{ user }</S.List.Header>
-                      </S.List.Content>
-                    </S.List.Item>
-                  )) }
+                <S.List selection>
+                  { users.map((user, i) => {
+                    return userAccounts[user] ?
+                      <LinkItem to={ `/users/${ userAccounts[user].id }` } key={ i }>
+                        <S.List.Icon name='user' />
+                        <S.List.Content>
+                          <S.List.Header>{ user }</S.List.Header>
+                        </S.List.Content>
+                      </LinkItem>
+                      :
+                      <S.Popup key={i} on={['click']} size='mini' trigger={
+                        <S.List.Item onClick={ (e) => e.stopPropagation() } key={ i }>
+                          <S.List.Icon name='user' />
+                          <S.List.Content>
+                            <S.List.Header>{ user }</S.List.Header>
+                          </S.List.Content>
+                        </S.List.Item>
+                      } content='This user does not have a profile.' />
+
+                  }) }
                 </S.List>
               </S.Card.Description>
             </S.Card.Content>
