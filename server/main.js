@@ -115,7 +115,8 @@ Meteor.methods({
       const query = {}
       let key = `accounts.${platform}`
       query[key] = accounts[platform]
-      if (accounts[platform].length > 0 && Meteor.users.find(query).count() > 0) {
+      const query2 = { ...query, id: this.userId }
+      if (accounts[platform].length > 0 && Meteor.users.find(query).count() > 0 && Meteor.users.find(query2).count() === 0) {
         throw new Meteor.Error(`${platform} name: ${accounts[platform]} is already linked to a profile. Please contact support if this is your account.`)
       }
     }

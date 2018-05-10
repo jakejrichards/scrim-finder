@@ -168,7 +168,7 @@ class Profile extends Component {
             { user.links.length > 0 ? <S.Button type='button' color='red' onClick={ this.handleRemoveLink } labelPosition='left' icon='minus' content='Remove Link'/> : '' }
             <S.Divider hidden />
             <S.Divider />
-            <S.Message hidden={ !success } size='small' onDismiss={ () => this.setState({ success: '' }) } info content={ success } />
+            <S.Message visible={ !!success } size='small' onDismiss={ () => this.setState({ success: '' }) } info content={ success } />
             <S.Message visible={ !!error } size='small' onDismiss={ () => this.setState({ error: '' }) } error content={ error } />
             <S.Button color='blue' content='Save' size='big' fluid />
           </S.Grid.Column>
