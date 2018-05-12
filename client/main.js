@@ -16,7 +16,6 @@ import User from './components/users/user'
 import Profile from './components/users/profile'
 
 const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => {
-  console.log(loggedIn)
   return (
     <Route { ...rest } component={ props => (
       loggedIn

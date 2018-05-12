@@ -134,8 +134,6 @@ Meteor.methods({
       throw new Meteor.Error('Game could not be found')
     }
 
-    console.log(description)
-
     const scrim = {
       id: uuid(),
       createdAt: new Date(),
@@ -149,8 +147,6 @@ Meteor.methods({
     if (description) {
       scrim.description = description
     }
-
-    console.log(scrim)
 
     if (save) {
       Meteor.users.update(this.userId, { $push: { scrims: { ...scrim, expireTime } } })

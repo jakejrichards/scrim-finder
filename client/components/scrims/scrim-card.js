@@ -56,8 +56,6 @@ class ScrimCard extends Component {
     const { title, region, createdAt, users, game, expiresAt, id, userAccounts, description } = this.props
     const { front, back, frontLoading, backLoading } = this.state
 
-    console.log(description)
-
     if(front || frontLoading) {
       return (
         <S.Transition key={0} onHide={ this.onHideFront } visible={ front } transitionOnMount animation='browse right' duration={ 200 }>

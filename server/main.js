@@ -115,13 +115,12 @@ Meteor.methods({
       const query = {}
       let key = `accounts.${platform}`
       query[key] = accounts[platform]
-      const query2 = { ...query, id: this.userId }
+      const query2 = { ...query, _id: this.userId }
       if (accounts[platform].length > 0 && Meteor.users.find(query).count() > 0 && Meteor.users.find(query2).count() === 0) {
         throw new Meteor.Error(`${platform} name: ${accounts[platform]} is already linked to a profile. Please contact support if this is your account.`)
       }
     }
 
-    console.log(bio, accounts, links, this.userId)
     const filteredLinks = links.filter(link => (link.title && link.url && link.color))
     Meteor.users.update({ _id: this.userId}, { $set: { accounts, links: filteredLinks, bio } })
 

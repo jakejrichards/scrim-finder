@@ -55,11 +55,10 @@ class User extends Component {
           </S.Grid.Column>
           <S.Grid.Column width={12}>
             <S.Header as='h2'>Accounts</S.Header>
-            <S.List horizontal>
+            <S.List horizontal relaxed>
               { accountsExists ? Object.keys(user.accounts).map(platform => {
-                console.log(user.accounts[platform])
                 return user.accounts[platform] ? (
-                    <S.List.Item key={ platform }>
+                    <S.List.Item style={{ paddingLeft: 0, marginLeft: 0, marginBottom: '1rem' }} key={ platform }>
                       <S.Image size='mini' src={ `/images/${ platform }.png` } />
                       <S.List.Content>
                         <S.List.Header>{ user.accounts[platform] }</S.List.Header>

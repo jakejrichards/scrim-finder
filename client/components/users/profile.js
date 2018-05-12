@@ -98,7 +98,6 @@ class Profile extends Component {
 
     Meteor.call('updateProfile', { bio, accounts, links }, (err, result) => {
       if (err) {
-        console.log(err.error)
         return this.setState({ error: err.error })
       }
       this.setState({ success: 'Successfully saved your profile!' })
@@ -125,8 +124,6 @@ class Profile extends Component {
         break
     }
 
-    console.log(error)
-
     return (
       <S.Container textAlign='left'>
         <S.Header style={{ marginBottom: '1rem', marginTop: '2rem' }} as='h1'>
@@ -135,7 +132,11 @@ class Profile extends Component {
             { user.profile.name }
             <S.Header.Subheader><S.Rating disabled defaultRating={ 5 } maxRating={5} /> Rating Coming Soon...</S.Header.Subheader>
           </S.Header.Content>
+          <Link to={ `/users/${user.id}` }>
+            <S.Button basic size='mini' content="View Public Profile" />
+          </Link>
         </S.Header>
+
         <S.Divider />
         <S.Form onSubmit={ this.handleSave } size='tiny'>
         <S.Grid stackable columns={16}>
@@ -168,7 +169,7 @@ class Profile extends Component {
             { user.links.length > 0 ? <S.Button type='button' color='red' onClick={ this.handleRemoveLink } labelPosition='left' icon='minus' content='Remove Link'/> : '' }
             <S.Divider hidden />
             <S.Divider />
-            <S.Message visible={ !!success } size='small' onDismiss={ () => this.setState({ success: '' }) } info content={ success } />
+            <S.Message color='blue' visible={ !!success } size='small' onDismiss={ () => this.setState({ success: '' }) } success content={ success } />
             <S.Message visible={ !!error } size='small' onDismiss={ () => this.setState({ error: '' }) } error content={ error } />
             <S.Button color='blue' content='Save' size='big' fluid />
           </S.Grid.Column>
