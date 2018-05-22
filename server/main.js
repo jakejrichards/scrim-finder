@@ -78,11 +78,11 @@ Meteor.startup(() => {
   // }
 
   Meteor.publish('user', function() {
-    return Meteor.users.find({ _id: this.userId }, { fields: { scrims: 1, accounts: 1, id: 1, links: 1, bio: 1, profile: 1 } })
+    return Meteor.users.find({ _id: this.userId }, { fields: { scrims: 1, accounts: 1, id: 1, links: 1, bio: 1, profile: 1, in8s: 1, poolInfo: 1, savedPoolInfo: 1 } })
   })
 
   Meteor.publish('users', function() {
-    return Meteor.users.find({}, { fields: { scrims: 1, accounts: 1, id: 1, links: 1, bio: 1, profile: 1 } })
+    return Meteor.users.find({}, { fields: { scrims: 1, accounts: 1, id: 1, links: 1, bio: 1, profile: 1, in8s: 1, poolInfo: 1 } })
   })
 
   Meteor.publish('games', function() {
@@ -106,6 +106,29 @@ Meteor.startup(() => {
 })
 
 Meteor.methods({
+  'enter8s'({ username, region, role, mlg, cmg, savedPoolInfo }) {
+    check(username, String);
+    check(region, String);
+    check(role, String);
+    check(mlg, String);
+    check(cmg, String);
+    check(savedPoolInfo, Object);
+
+    if (!this.userId) {
+      throw new Meteor.Error('You must be logged in!');
+    }
+
+    Meteor.users.update({ _id: this.userId }, { $set: { in8s: true, savedPoolInfo, poolInfo: { username, region, role, mlg, cmg } } })
+
+  },
+  'leave8s'() {
+    if (!this.userId) {
+      throw new Meteor.Error('You must be logged in!');
+    }
+
+    Meteor.users.update({ _id: this.userId }, { $set: { in8s: false } })
+
+  },
   'updateProfile'({ bio, accounts, links }) {
     if (!bio) {
       bio = ''
@@ -132,6 +155,8 @@ Accounts.onCreateUser((options, user) => {
   if (options.profile) {
     user.profile = options.profile;
   }
+  user.in8s = false;
+  user.poolInfo = undefined;
   user.bio = ''
   user.links = []
   user.accounts = {

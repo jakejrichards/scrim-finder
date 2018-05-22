@@ -36,6 +36,7 @@ class Menu extends Component {
             <S.Header as='h2'>Scrims Win</S.Header>
           </Item>
           <Item onClick={ this.close } to='/scrims'>Find Scrims</Item>
+          <Item onClick={ this.close } to='/8s'>Find 8s</Item>
           { loggedIn ? <Item onClick={ this.close } to='/profile'>My Profile</Item> : '' }
           <S.Menu.Item>
             <AccountsUIWrapper />
