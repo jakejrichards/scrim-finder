@@ -14,6 +14,8 @@ import Home from './components/home/home'
 import Scrims from './components/scrims/scrims'
 import User from './components/users/user'
 import Profile from './components/users/profile'
+import Pool from './components/8s/pool'
+import Enter from './components/8s/enter'
 
 const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => {
   return (
@@ -25,7 +27,21 @@ const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => {
   )
 }
 
-const App = ({ loggedIn }) => (
+const Route8s = ({ loggedIn, in8s, ...rest }) => {
+  return (
+    <Route { ...rest } component={ props => (
+      loggedIn && in8s !== false ?
+        in8s ?
+          <Pool { ...props } />
+        :
+          <S.Loader active={ true } />
+      :
+        <Enter { ...props } />
+    )} />
+  );
+}
+
+const App = ({ loggedIn, in8s }) => (
   <Router>
     <Analytics id='UA-118892210-1'>
       <S.Container fluid>
@@ -33,6 +49,7 @@ const App = ({ loggedIn }) => (
         <Route exact path='/' component={ Home } />
         <Route path='/scrims' component={ Scrims } />
         <Route path='/users/:id' component={ User } />
+        <Route8s path='/8s' loggedIn={ loggedIn } in8s={ in8s } />
         <PrivateRoute path='/profile' loggedIn={ loggedIn } component={ Profile } />
         <Footer />
       </S.Container>
@@ -46,7 +63,9 @@ const AppWithTracker = withTracker(() => {
   Meteor.subscribe('users')
   const currentUser = Meteor.user()
   const loggedIn = Meteor.userId() && currentUser !== null
-  return { loggedIn }
+  const in8s = Meteor.user() && Meteor.user() !== null && Meteor.user().in8s;
+
+  return { loggedIn, in8s }
 })(App)
 
 Meteor.startup(() => {
