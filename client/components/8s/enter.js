@@ -130,6 +130,5 @@ class Enter extends Component {
 
 export default withTracker(() => {
     const { savedPoolInfo } = Meteor.user();
-    console.log(Meteor.user())
     return { savedPoolInfo: savedPoolInfo ? savedPoolInfo: {} };
 })(Enter);

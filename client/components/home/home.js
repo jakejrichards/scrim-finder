@@ -21,8 +21,13 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      message: props.location.state && props.location.state.message ? props.location.state.message : '',
       showMessage: true
     }
+  }
+
+  dismissAlertMessage = () => {
+    this.setState({ message: '' })
   }
 
   dismissMessage = () => {
@@ -31,7 +36,7 @@ class Home extends Component {
 
   render() {
     const { games } = this.props
-    const { showMessage } = this.state
+    const { showMessage, message } = this.state
     return (
       <S.Container textAlign='center'>
         <S.Header
@@ -42,6 +47,9 @@ class Home extends Component {
         <S.Grid stackable container>
           <S.Grid.Row columns={ 1 }>
             <S.Grid.Column>
+            {
+              message ? <S.Message error onDismiss={ this.dismissAlertMessage } style={{ textAlign: 'left' }} content={ message } /> : ''
+            }
             { showMessage ? <S.Message
               onDismiss={ this.dismissMessage }
               style={{ textAlign: 'left' }}

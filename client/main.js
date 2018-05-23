@@ -30,13 +30,13 @@ const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => {
 const Route8s = ({ loggedIn, in8s, ...rest }) => {
   return (
     <Route { ...rest } component={ props => (
-      loggedIn && in8s !== false ?
+      loggedIn ?
         in8s ?
           <Pool { ...props } />
         :
-          <S.Loader active={ true } />
+          <Enter { ...props } />
       :
-        <Enter { ...props } />
+        <Redirect to={{ pathname: '/', state: { message: 'You must be logged in to find 8s!' } }} />
     )} />
   );
 }
